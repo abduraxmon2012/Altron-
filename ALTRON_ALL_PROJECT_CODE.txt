@@ -1,0 +1,3389 @@
+﻿
+================================================================================
+=== Р¤РђР™Р›: index.html ===
+================================================================================
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АЛЬТРОН — Математический Искусственный Интеллект</title>
+
+    <!-- KaTeX: Математический рендеринг формул высокого разрешения -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Math.js: Продвинутый символьный и численный анализатор -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.min.js"></script>
+
+    <!-- Стили Альтрона -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ / ХЕДЕР АЛЬТРОНА -->
+    <header class="altron-header">
+        <div class="brand-section">
+            <div class="altron-core-avatar" id="altronCore" title="Квантовое ядро Альтрона"></div>
+            <div class="brand-titles">
+                <h1>АЛЬТРОН <span>AI</span></h1>
+                <div class="subtitle">ВЫСШИЙ МАТЕМАТИЧЕСКИЙ РАЗУМ • СИСТЕМА В СЕТИ</div>
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <button id="copyAllChatBtn" class="hud-btn" title="Скопировать весь диалог и все решения">
+                📋 <span>Скопировать всё</span>
+            </button>
+            <button id="exportAllChatBtn" class="hud-btn" title="Скачать весь диалог в файл Markdown">
+                💾 <span>Экспорт</span>
+            </button>
+            <button id="voiceToggleBtn" class="hud-btn active" title="Включить/выключить синтез голоса">
+                🔊 <span>Голос: ВКЛ</span>
+            </button>
+            <button id="soundToggleBtn" class="hud-btn active" title="Включить/выключить звуковые эффекты">
+                ⚡ <span>Звук: ВКЛ</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- НАВИГАЦИОННЫЕ ВКЛАДКИ -->
+    <nav class="navigation-bar">
+        <button class="nav-tab active" data-tab="chatTab">💬 Терминал Альтрона</button>
+        <button class="nav-tab" data-tab="graphTab">📈 Графопостроитель 2D</button>
+        <button class="nav-tab" data-tab="handbookTab">📚 База знаний и формул</button>
+        <button class="nav-tab" data-tab="settingsTab">⚙️ Ядро и Настройки</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
+    <main class="altron-container">
+
+        <!-- ВКЛАДКА 1: ТЕРМИНАЛ И РЕШАТЕЛЬ -->
+        <section id="chatTab" class="tab-pane active">
+            <div class="chat-container">
+                <!-- Окно сообщений -->
+                <div class="chat-messages" id="chatMessages"></div>
+
+                <!-- Быстрые шаблоны задач -->
+                <div class="chips-bar">
+                    <button class="chip" data-query="2x^2 - 5x + 2 = 0">Квадратное: 2x² - 5x + 2 = 0</button>
+                    <button class="chip" data-query="производная sin(x)*e^x">Производная: (sin(x)·eˣ)'</button>
+                    <button class="chip" data-query="интеграл x^2">Интеграл: ∫ x² dx</button>
+                    <button class="chip" data-query="система x + y = 10, 2x - y = 5">СЛАУ: x+y=10, 2x-y=5</button>
+                    <button class="chip" data-query="определитель [[1, 2], [3, 4]]">Матрица: det [[1,2],[3,4]]</button>
+                    <button class="chip" data-query="нод 48 и 64">НОД (48, 64)</button>
+                    <button class="chip" data-query="факториал 7">Факториал 7!</button>
+                    <button class="chip" data-query="статистика 12, 15, 18, 20, 25">Статистика ряда чисел</button>
+                    <button class="chip" data-query="график sin(x)*x">Построй график sin(x)*x</button>
+                </div>
+
+                <!-- Панель ввода -->
+                <div class="input-panel">
+                    <div class="input-row">
+                        <input type="text" id="queryInput" class="query-input" placeholder="Введите уравнение, функцию, задачу или вопрос Альтрону..." autocomplete="off">
+                        <button id="sendBtn" class="send-btn">
+                            <span>РЕШИТЬ</span> ➔
+                        </button>
+                    </div>
+
+                    <!-- Виртуальная математическая клавиатура -->
+                    <div class="math-keypad">
+                        <button class="key-btn" data-insert="^2" title="Возведение в квадрат">x²</button>
+                        <button class="key-btn" data-insert="^" title="Степень">xʸ</button>
+                        <button class="key-btn" data-insert="sqrt(" title="Квадратный корень">√</button>
+                        <button class="key-btn" data-insert="производная " title="Производная">d/dx</button>
+                        <button class="key-btn" data-insert="интеграл " title="Интеграл">∫</button>
+                        <button class="key-btn" data-insert="pi" title="Число Пи">π</button>
+                        <button class="key-btn" data-insert="e" title="Число Эйлера">e</button>
+                        <button class="key-btn" data-insert="sin(" title="Синус">sin</button>
+                        <button class="key-btn" data-insert="cos(" title="Косинус">cos</button>
+                        <button class="key-btn" data-insert="tan(" title="Тангенс">tan</button>
+                        <button class="key-btn" data-insert="ln(" title="Натуральный логарифм">ln</button>
+                        <button class="key-btn" data-insert="log(" title="Десятичный логарифм">log</button>
+                        <button class="key-btn" data-insert="система " title="Система уравнений">СЛАУ</button>
+                        <button class="key-btn" data-insert="определитель " title="Определитель матрицы">det(A)</button>
+                        <button class="key-btn" data-insert="график " title="Построить график">График</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 2: ГРАФОПОСТРОИТЕЛЬ -->
+        <section id="graphTab" class="tab-pane">
+            <div class="graph-container">
+                <div class="graph-toolbar">
+                    <input type="text" id="graphExprInput" class="graph-input" placeholder="Введите функцию, например: x^3 - 3*x или sin(x)" value="x^3 - 3*x">
+                    <button id="plotBtn" class="send-btn">Построить</button>
+                    <button id="zoomInBtn" class="hud-btn" title="Приблизить">🔍 +</button>
+                    <button id="zoomOutBtn" class="hud-btn" title="Отдалить">🔍 −</button>
+                    <button id="resetGraphBtn" class="hud-btn" title="Сбросить масштаб">↺ Сброс</button>
+                </div>
+                <div class="graph-canvas-wrapper">
+                    <canvas id="mathCanvas"></canvas>
+                    <div class="canvas-hint">💡 Зажмите ЛКМ для перемещения | Колесо мыши — масштаб | Зеленые точки — корни (f(x)=0)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 3: БАЗА ЗНАНИЙ И ФОРМУЛ -->
+        <section id="handbookTab" class="tab-pane">
+            <div class="handbook-header">
+                <input type="text" id="handbookSearch" class="handbook-search" placeholder="🔍 Поиск по справочнику Альтрона (например: интеграл, Пифагор, Виет, производная, матрица)...">
+            </div>
+            <div id="handbookList" class="handbook-grid"></div>
+        </section>
+
+        <!-- ВКЛАДКА 4: НАСТРОЙКИ ЯДРА И API -->
+        <section id="settingsTab" class="tab-pane">
+            <div class="settings-card">
+                <h2>⚙️ Настройки и Режимы Интеллекта</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                    Альтрон работает автономно на встроенном символьном движке. Вы также можете подключить внешнюю нейросетевую модель для решения олимпиадных и сложных текстовых задач.
+                </p>
+
+                <div class="settings-group">
+                    <label for="aiModeSelect">Режим работы Альтрона:</label>
+                    <select id="aiModeSelect">
+                        <option value="local">Автономный символьный процессор (Оффлайн, мгновенно)</option>
+                        <option value="gemini">Google Gemini 1.5 Flash (Глубокий разбор текстовых задач)</option>
+                    </select>
+                </div>
+
+                <div class="settings-group" id="apiKeyGroup">
+                    <label for="apiKeyInput">API-ключ (необязательно для оффлайн-режима):</label>
+                    <input type="password" id="apiKeyInput" placeholder="Введите ваш Gemini API Key...">
+                    <small style="color: var(--text-muted); display: block; margin-top: 4px;">Ключ хранится локально в вашем браузере.</small>
+                </div>
+
+                <button id="saveSettingsBtn" class="send-btn" style="width: 100%; justify-content: center; padding: 12px;">Сохранить параметры</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ТОСТ-УВЕДОМЛЕНИЕ О КОПИРОВАНИИ -->
+    <div id="copyToast" class="copy-toast">✓ Скопировано в буфер обмена!</div>
+
+    <!-- СКРИПТЫ АЛЬТРОНА -->
+    <script src="js/math_engine.js"></script>
+    <script src="js/handbook.js"></script>
+    <script src="js/graph_engine.js"></script>
+    <script src="js/altron_core.js"></script>
+    <script src="js/ui.js"></script>
+
+    <script>
+        // Сохранение настроек API
+        const aiModeSelect = document.getElementById('aiModeSelect');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+
+        if (apiKeyInput && saveSettingsBtn && aiModeSelect) {
+            apiKeyInput.value = AltronCore.getApiKey();
+            aiModeSelect.value = AltronCore.getModel();
+
+            saveSettingsBtn.addEventListener('click', () => {
+                AltronCore.setApiKey(apiKeyInput.value.trim(), aiModeSelect.value);
+                alert("Параметры Альтрона успешно обновлены!");
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+================================================================================
+=== Р¤РђР™Р›: styles.css ===
+================================================================================
+
+/* ==========================================================================
+   ALTRON CYBERNETIC THEME (styles.css)
+   Futuristic UI for the Supreme Mathematical AI
+   ========================================================================== */
+
+:root {
+    --bg-dark: #060913;
+    --bg-surface: #0b1120;
+    --bg-card: rgba(14, 23, 42, 0.75);
+    --border-color: rgba(0, 243, 255, 0.2);
+    --border-glow: rgba(0, 243, 255, 0.4);
+    
+    --primary-cyan: #00f3ff;
+    --primary-cyan-glow: 0 0 12px rgba(0, 243, 255, 0.5);
+    --ultron-crimson: #ff0055;
+    --ultron-glow: 0 0 14px rgba(255, 0, 85, 0.6);
+    --neon-green: #00ff9d;
+    --neon-yellow: #ffb800;
+    
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-cyan: #38bdf8;
+    
+    --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 243, 255, 0.04) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(255, 0, 85, 0.04) 0%, transparent 45%),
+        linear-gradient(rgba(0, 243, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.015) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(6, 9, 19, 0.8);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 243, 255, 0.3);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-cyan);
+}
+
+/* ==========================================================================
+   HEADER & HUD
+   ========================================================================== */
+.altron-header {
+    background: rgba(11, 17, 32, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.altron-core-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.3) 0%, rgba(6, 9, 19, 0.9) 70%);
+    border: 2px solid var(--primary-cyan);
+    box-shadow: var(--primary-cyan-glow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.altron-core-avatar::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--primary-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-cyan);
+    animation: corePulse 2.5s infinite ease-in-out;
+}
+
+.altron-core-avatar.speaking::after {
+    background: var(--ultron-crimson);
+    box-shadow: var(--ultron-glow);
+    animation: speakingPulse 0.4s infinite alternate;
+}
+
+@keyframes corePulse {
+    0%, 100% { transform: scale(0.9); opacity: 0.7; }
+    50% { transform: scale(1.3); opacity: 1; }
+}
+
+@keyframes speakingPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.6); }
+}
+
+.brand-titles h1 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+}
+
+.brand-titles h1 span {
+    color: var(--primary-cyan);
+}
+
+.brand-titles .subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-code);
+    letter-spacing: 1px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hud-btn {
+    background: rgba(14, 23, 42, 0.6);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.hud-btn:hover {
+    border-color: var(--primary-cyan);
+    color: var(--text-main);
+    box-shadow: var(--primary-cyan-glow);
+}
+
+.hud-btn.active {
+    border-color: var(--primary-cyan);
+    color: var(--primary-cyan);
+    background: rgba(0, 243, 255, 0.1);
+}
+
+/* ==========================================================================
+   NAVIGATION TABS
+   ========================================================================== */
+.navigation-bar {
+    background: rgba(7, 12, 23, 0.95);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    display: flex;
+    gap: 4px;
+    padding: 0 24px;
+}
+
+.nav-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-tab:hover {
+    color: var(--text-main);
+}
+
+.nav-tab.active {
+    color: var(--primary-cyan);
+    border-bottom-color: var(--primary-cyan);
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+}
+
+/* ==========================================================================
+   MAIN LAYOUT & PANES
+   ========================================================================== */
+.altron-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px 20px;
+}
+
+.tab-pane {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   CHAT MESSAGES
+   ========================================================================== */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: calc(100vh - 270px);
+    min-height: 480px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px 8px;
+    margin-bottom: 12px;
+}
+
+.chat-message {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px 20px;
+    max-width: 88%;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.2s ease;
+}
+
+.user-message {
+    align-self: flex-end;
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+.altron-message {
+    align-self: flex-start;
+    border-left: 3px solid var(--primary-cyan);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.msg-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-family: var(--font-code);
+}
+
+.msg-author {
+    color: var(--primary-cyan);
+    font-weight: 700;
+}
+
+.user-message .msg-author {
+    color: #38bdf8;
+}
+
+.msg-time {
+    color: var(--text-muted);
+}
+
+.msg-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 4px;
+}
+
+.msg-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+}
+
+.msg-content h1, .msg-content h2, .msg-content h3 {
+    color: #ffffff;
+    margin: 12px 0 6px 0;
+}
+
+.msg-content code {
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--primary-cyan);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--font-code);
+    font-size: 0.9em;
+}
+
+.msg-content strong {
+    color: #ffffff;
+}
+
+.msg-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.action-btn {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    color: var(--primary-cyan);
+    border-color: var(--primary-cyan);
+}
+
+/* Thinking Indicator */
+.chat-message.thinking {
+    border-left: 3px solid var(--ultron-crimson);
+}
+
+.pulse-status {
+    color: var(--ultron-crimson);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    animation: statusBlink 1.5s infinite;
+}
+
+@keyframes statusBlink {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+.thinking-dots {
+    display: flex;
+    gap: 6px;
+    padding: 8px 0;
+}
+
+.thinking-dots span {
+    width: 8px;
+    height: 8px;
+    background: var(--primary-cyan);
+    border-radius: 50%;
+    animation: dotsJump 1.2s infinite ease-in-out;
+}
+
+.thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotsJump {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+    40% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ==========================================================================
+   QUICK CHIPS
+   ========================================================================== */
+.chips-bar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 6px 0;
+    margin-bottom: 8px;
+}
+
+.chip {
+    background: rgba(14, 23, 42, 0.8);
+    border: 1px solid rgba(0, 243, 255, 0.15);
+    color: var(--text-cyan);
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.chip:hover {
+    border-color: var(--primary-cyan);
+    background: rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
+}
+
+/* ==========================================================================
+   INPUT PANEL & KEYPAD
+   ========================================================================== */
+.input-panel {
+    background: rgba(11, 17, 32, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.query-input {
+    flex: 1;
+    background: rgba(6, 9, 19, 0.8);
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: var(--font-main);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.query-input:focus {
+    border-color: var(--primary-cyan);
+    box-shadow: var(--primary-cyan-glow);
+}
+
+.send-btn {
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.8), rgba(0, 150, 255, 0.8));
+    border: none;
+    color: #060913;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.send-btn:hover {
+    box-shadow: var(--primary-cyan-glow);
+    transform: translateY(-1px);
+}
+
+/* Virtual Math Keypad */
+.math-keypad {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.key-btn {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.key-btn:hover {
+    background: rgba(0, 243, 255, 0.15);
+    border-color: var(--primary-cyan);
+    color: var(--primary-cyan);
+}
+
+/* ==========================================================================
+   GRAPH TAB
+   ========================================================================== */
+.graph-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.graph-toolbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 10px 16px;
+    border-radius: 10px;
+}
+
+.graph-input {
+    flex: 1;
+    background: rgba(6, 9, 19, 0.8);
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #ffffff;
+    font-family: var(--font-code);
+    outline: none;
+}
+
+.graph-canvas-wrapper {
+    position: relative;
+    background: #060a12;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+#mathCanvas {
+    width: 100%;
+    height: 480px;
+    display: block;
+    cursor: crosshair;
+}
+
+.canvas-hint {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-code);
+    background: rgba(6, 9, 19, 0.7);
+    padding: 4px 8px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   HANDBOOK TAB
+   ========================================================================== */
+.handbook-header {
+    margin-bottom: 16px;
+}
+
+.handbook-search {
+    width: 100%;
+    background: rgba(6, 9, 19, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.handbook-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+    overflow-y: auto;
+    max-height: calc(100vh - 240px);
+    padding-bottom: 20px;
+}
+
+.handbook-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    backdrop-filter: blur(8px);
+    position: relative;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.handbook-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-cyan);
+    box-shadow: 0 6px 20px rgba(0, 243, 255, 0.15);
+}
+
+.card-badge {
+    align-self: flex-start;
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--primary-cyan);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+.handbook-card h3 {
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.handbook-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.card-formula {
+    background: rgba(6, 9, 19, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+.card-example {
+    font-size: 0.8rem;
+    color: var(--text-cyan);
+    font-family: var(--font-code);
+}
+
+.use-formula-btn {
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid var(--primary-cyan);
+    color: var(--primary-cyan);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: all 0.2s ease;
+}
+
+.use-formula-btn:hover {
+    background: var(--primary-cyan);
+    color: #060913;
+}
+
+/* ==========================================================================
+   SETTINGS TAB
+   ========================================================================== */
+.settings-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 680px;
+    margin: 20px auto;
+}
+
+.settings-card h2 {
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.settings-group {
+    margin-bottom: 20px;
+}
+
+.settings-group label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.settings-group input, .settings-group select {
+    width: 100%;
+    background: rgba(6, 9, 19, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+/* Selection & Copying Enhancements */
+::selection {
+    background: rgba(0, 243, 255, 0.45);
+    color: #ffffff;
+    text-shadow: 0 0 4px #00f3ff;
+}
+
+.chat-message, .msg-content, .msg-title, .card-formula, .card-example {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+}
+
+/* Floating Copy Toast */
+.copy-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(6, 9, 19, 0.95);
+    border: 1px solid var(--primary-cyan);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+    color: var(--primary-cyan);
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    padding: 12px 24px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.copy-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .altron-header {
+        padding: 10px 16px;
+    }
+    .navigation-bar {
+        padding: 0 10px;
+        overflow-x: auto;
+    }
+    .chat-message {
+        max-width: 95%;
+    }
+    .handbook-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+================================================================================
+=== Р¤РђР™Р›: js\math_engine.js ===
+================================================================================
+
+/**
+ * ALTRON MATHEMATICAL CORE ENGINE (math_engine.js)
+ * Символьный и численный математический движок с пошаговыми решениями
+ */
+
+const AltronMath = (function() {
+    'use strict';
+
+    // Вспомогательное форматирование чисел
+    function formatNum(n, precision = 6) {
+        if (Math.abs(n) < 1e-12) return "0";
+        if (Number.isInteger(n)) return n.toString();
+        const rounded = Number(n.toFixed(precision));
+        return rounded.toString();
+    }
+
+    // НОД (наибольший общий делитель)
+    function gcd(a, b) {
+        a = Math.abs(Math.round(a));
+        b = Math.abs(Math.round(b));
+        while (b) {
+            let t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+
+    // НОК (наименьшее общее кратное)
+    function lcm(a, b) {
+        if (a === 0 || b === 0) return 0;
+        return Math.abs(Math.round(a * b)) / gcd(a, b);
+    }
+
+    // Факториал
+    function factorial(n) {
+        if (n < 0) return NaN;
+        if (n === 0 || n === 1) return 1;
+        let res = 1;
+        for (let i = 2; i <= n; i++) res *= i;
+        return res;
+    }
+
+    // Сочетания C(n, k)
+    function combinations(n, k) {
+        if (k < 0 || k > n) return 0;
+        if (k === 0 || k === n) return 1;
+        if (k > n / 2) k = n - k;
+        let res = 1;
+        for (let i = 1; i <= k; i++) {
+            res = (res * (n - i + 1)) / i;
+        }
+        return Math.round(res);
+    }
+
+    // Размещение A(n, k)
+    function permutations(n, k) {
+        if (k < 0 || k > n) return 0;
+        let res = 1;
+        for (let i = 0; i < k; i++) {
+            res *= (n - i);
+        }
+        return res;
+    }
+
+    // Проверка на простоту
+    function isPrime(n) {
+        n = Math.round(n);
+        if (n <= 1) return false;
+        if (n <= 3) return true;
+        if (n % 2 === 0 || n % 3 === 0) return false;
+        for (let i = 5; i * i <= n; i += 6) {
+            if (n % i === 0 || n % (i + 2) === 0) return false;
+        }
+        return true;
+    }
+
+    // Факторизация на простые множители
+    function primeFactors(n) {
+        n = Math.abs(Math.round(n));
+        const factors = {};
+        if (n <= 1) return factors;
+        
+        let d = 2;
+        while (d * d <= n) {
+            while (n % d === 0) {
+                factors[d] = (factors[d] || 0) + 1;
+                n /= d;
+            }
+            d = d === 2 ? 3 : d + 2;
+        }
+        if (n > 1) {
+            factors[n] = (factors[n] || 0) + 1;
+        }
+        return factors;
+    }
+
+    // -------------------------------------------------------------
+    // АЛГЕБРА: Решение уравнений
+    // -------------------------------------------------------------
+
+    // Квадратное уравнение a*x^2 + b*x + c = 0
+    function solveQuadratic(a, b, c) {
+        const steps = [];
+        steps.push(`Исходное квадратное уравнение: $${a}x^2 + (${b})x + (${c}) = 0$`);
+        steps.push(`Коэффициенты уравнения: $a = ${a}$, $b = ${b}$, $c = ${c}$`);
+
+        if (Math.abs(a) < 1e-12) {
+            // Линейное уравнение
+            if (Math.abs(b) < 1e-12) {
+                if (Math.abs(c) < 1e-12) {
+                    return {
+                        roots: ["Уравнение имеет бесконечно много решений (0 = 0)"],
+                        steps: steps.concat(["$0 = 0$ — верно для любого $x$."]),
+                        latex: "x \\in \\mathbb{R}"
+                    };
+                } else {
+                    return {
+                        roots: ["Уравнение не имеет решений"],
+                        steps: steps.concat([`Уравнение вида $${c} = 0$ противоречиво.`]),
+                        latex: "\\emptyset"
+                    };
+                }
+            }
+            const root = -c / b;
+            steps.push(`Так как $a = 0$, уравнение линейное: $${b}x + ${c} = 0$`);
+            steps.push(`Переносим свободный член: $${b}x = ${-c}$`);
+            steps.push(`Находим корень: $x = \\frac{${-c}}{${b}} = ${formatNum(root)}$`);
+            return {
+                roots: [formatNum(root)],
+                steps,
+                latex: `x = ${formatNum(root)}`
+            };
+        }
+
+        const D = b * b - 4 * a * c;
+        steps.push(`Вычисляем дискриминант: $D = b^2 - 4ac = (${b})^2 - 4 \\cdot (${a}) \\cdot (${c}) = ${D}$`);
+
+        if (D > 1e-12) {
+            const sqrtD = Math.sqrt(D);
+            const x1 = (-b + sqrtD) / (2 * a);
+            const x2 = (-b - sqrtD) / (2 * a);
+            steps.push(`Так как $D > 0$, уравнение имеет два различных действительных корня:`);
+            steps.push(`$x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a} = \\frac{-(${b}) \\pm \\sqrt{${D}}}{2 \\cdot (${a})}$`);
+            steps.push(`$x_1 = \\frac{${-b} + ${formatNum(sqrtD, 4)}}{${2 * a}} = ${formatNum(x1)}$`);
+            steps.push(`$x_2 = \\frac{${-b} - ${formatNum(sqrtD, 4)}}{${2 * a}} = ${formatNum(x2)}$`);
+            return {
+                roots: [formatNum(x1), formatNum(x2)],
+                steps,
+                latex: `x_1 = ${formatNum(x1)}, \\quad x_2 = ${formatNum(x2)}`
+            };
+        } else if (Math.abs(D) <= 1e-12) {
+            const x = -b / (2 * a);
+            steps.push(`Так как $D = 0$, уравнение имеет один корень кратности 2 (два совпадающих корня):`);
+            steps.push(`$x = \\frac{-b}{2a} = \\frac{-(${b})}{2 \\cdot (${a})} = ${formatNum(x)}$`);
+            return {
+                roots: [formatNum(x)],
+                steps,
+                latex: `x = ${formatNum(x)}`
+            };
+        } else {
+            const realPart = -b / (2 * a);
+            const imagPart = Math.sqrt(-D) / (2 * a);
+            steps.push(`Так как $D < 0$, действительных корней нет. Находим комплексные корни:`);
+            steps.push(`$x_{1,2} = \\frac{-b \\pm i\\sqrt{|D|}}{2a}$`);
+            const root1 = `${formatNum(realPart)} + ${formatNum(Math.abs(imagPart))}i`;
+            const root2 = `${formatNum(realPart)} - ${formatNum(Math.abs(imagPart))}i`;
+            steps.push(`$x_1 = ${root1}$`);
+            steps.push(`$x_2 = ${root2}$`);
+            return {
+                roots: [root1, root2],
+                steps,
+                latex: `x_{1,2} = ${formatNum(realPart)} \\pm ${formatNum(Math.abs(imagPart))}i`
+            };
+        }
+    }
+
+    // Решение системы 2x2 линейных уравнений методом Крамера:
+    // a1*x + b1*y = c1
+    // a2*x + b2*y = c2
+    function solveSystem2x2(a1, b1, c1, a2, b2, c2) {
+        const steps = [];
+        steps.push(`Система линейных уравнений:\n$$\\begin{cases} ${a1}x + ${b1}y = ${c1} \\\\ ${a2}x + ${b2}y = ${c2} \\end{cases}$$`);
+        steps.push(`Применим метод Крамера.`);
+        
+        const detMain = a1 * b2 - a2 * b1;
+        steps.push(`Главный определитель системы $\\Delta$:\n$$\\Delta = \\begin{vmatrix} ${a1} & ${b1} \\\\ ${a2} & ${b2} \\end{vmatrix} = (${a1}) \\cdot (${b2}) - (${b1}) \\cdot (${a2}) = ${detMain}$$`);
+
+        const detX = c1 * b2 - c2 * b1;
+        steps.push(`Определитель $\\Delta_x$ (заменяем 1-й столбец свободными членами):\n$$\\Delta_x = \\begin{vmatrix} ${c1} & ${b1} \\\\ ${c2} & ${b2} \\end{vmatrix} = (${c1}) \\cdot (${b2}) - (${b1}) \\cdot (${c2}) = ${detX}$$`);
+
+        const detY = a1 * c2 - a2 * c1;
+        steps.push(`Определитель $\\Delta_y$ (заменяем 2-й столбец свободными членами):\n$$\\Delta_y = \\begin{vmatrix} ${a1} & ${c1} \\\\ ${a2} & ${c2} \\end{vmatrix} = (${a1}) \\cdot (${c2}) - (${c1}) \\cdot (${a2}) = ${detY}$$`);
+
+        if (Math.abs(detMain) > 1e-12) {
+            const x = detX / detMain;
+            const y = detY / detMain;
+            steps.push(`Так как $\\Delta \\neq 0$, система имеет единственное решение:`);
+            steps.push(`$x = \\frac{\\Delta_x}{\\Delta} = \\frac{${detX}}{${detMain}} = ${formatNum(x)}$`);
+            steps.push(`$y = \\frac{\\Delta_y}{\\Delta} = \\frac{${detY}}{${detMain}} = ${formatNum(y)}$`);
+            return {
+                solution: { x, y },
+                steps,
+                latex: `x = ${formatNum(x)}, \\quad y = ${formatNum(y)}`
+            };
+        } else {
+            if (Math.abs(detX) < 1e-12 && Math.abs(detY) < 1e-12) {
+                steps.push(`Так как $\\Delta = 0$ и $\\Delta_x = \\Delta_y = 0$, система имеет бесконечно много решений.`);
+                return {
+                    solution: "Бесконечно много решений",
+                    steps,
+                    latex: "\\text{Бесконечно много решений}"
+                };
+            } else {
+                steps.push(`Так как $\\Delta = 0$, но $\\Delta_x \\neq 0$ или $\\Delta_y \\neq 0$, система несовместна (не имеет решений).`);
+                return {
+                    solution: "Нет решений",
+                    steps,
+                    latex: "\\emptyset"
+                };
+            }
+        }
+    }
+
+    // -------------------------------------------------------------
+    // ЛИНЕЙНАЯ АЛГЕБРА: Матрицы
+    // -------------------------------------------------------------
+
+    // Определитель матрицы N x N
+    function matrixDeterminant(matrix) {
+        const n = matrix.length;
+        if (n !== matrix[0].length) throw new Error("Матрица должна быть квадратной!");
+
+        if (n === 1) return matrix[0][0];
+        if (n === 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+        }
+        if (n === 3) {
+            const m = matrix;
+            return (
+                m[0][0] * m[1][1] * m[2][2] +
+                m[0][1] * m[1][2] * m[2][0] +
+                m[0][2] * m[1][0] * m[2][1] -
+                m[0][2] * m[1][1] * m[2][0] -
+                m[0][0] * m[1][2] * m[2][1] -
+                m[0][1] * m[1][0] * m[2][2]
+            );
+        }
+
+        // Общий рекурсивный метод разложения по первой строке
+        let det = 0;
+        for (let j = 0; j < n; j++) {
+            const subMatrix = [];
+            for (let i = 1; i < n; i++) {
+                subMatrix.push(matrix[i].filter((_, colIdx) => colIdx !== j));
+            }
+            const sign = j % 2 === 0 ? 1 : -1;
+            det += sign * matrix[0][j] * matrixDeterminant(subMatrix);
+        }
+        return det;
+    }
+
+    // Транспонирование матрицы
+    function matrixTranspose(matrix) {
+        const rows = matrix.length;
+        const cols = matrix[0].length;
+        const res = [];
+        for (let j = 0; j < cols; j++) {
+            res[j] = [];
+            for (let i = 0; i < rows; i++) {
+                res[j][i] = matrix[i][j];
+            }
+        }
+        return res;
+    }
+
+    // Умножение матриц
+    function matrixMultiply(A, B) {
+        const rowsA = A.length;
+        const colsA = A[0].length;
+        const rowsB = B.length;
+        const colsB = B[0].length;
+
+        if (colsA !== rowsB) {
+            throw new Error(`Невозможно перемножить матрицы размеров ${rowsA}x${colsA} и ${rowsB}x${colsB}`);
+        }
+
+        const C = [];
+        for (let i = 0; i < rowsA; i++) {
+            C[i] = [];
+            for (let j = 0; j < colsB; j++) {
+                let sum = 0;
+                for (let k = 0; k < colsA; k++) {
+                    sum += A[i][k] * B[k][j];
+                }
+                C[i][j] = sum;
+            }
+        }
+        return C;
+    }
+
+    // Обратная матрица
+    function matrixInverse(matrix) {
+        const n = matrix.length;
+        if (n !== matrix[0].length) throw new Error("Матрица должна быть квадратной");
+        const det = matrixDeterminant(matrix);
+        if (Math.abs(det) < 1e-12) {
+            throw new Error("Матрица вырождена (определитель = 0), обратной матрицы не существует.");
+        }
+
+        if (n === 1) return [[1 / matrix[0][0]]];
+
+        // Матрица алгебраических дополнений
+        const adj = [];
+        for (let i = 0; i < n; i++) {
+            adj[i] = [];
+            for (let j = 0; j < n; j++) {
+                const sub = [];
+                for (let r = 0; r < n; r++) {
+                    if (r === i) continue;
+                    sub.push(matrix[r].filter((_, c) => c !== j));
+                }
+                const sign = (i + j) % 2 === 0 ? 1 : -1;
+                adj[i][j] = sign * matrixDeterminant(sub);
+            }
+        }
+
+        // Транспонируем adj и делим на det
+        const inv = [];
+        for (let i = 0; i < n; i++) {
+            inv[i] = [];
+            for (let j = 0; j < n; j++) {
+                inv[i][j] = adj[j][i] / det;
+            }
+        }
+        return inv;
+    }
+
+    // Форматирование матрицы в LaTeX
+    function matrixToLatex(matrix) {
+        const rows = matrix.map(row => row.map(v => formatNum(v, 4)).join(" & "));
+        return "\\begin{pmatrix}\n" + rows.join(" \\\\\n") + "\n\\end{pmatrix}";
+    }
+
+    // -------------------------------------------------------------
+    // СТАТИСТИКА И АНАЛИЗ ДАННЫХ
+    // -------------------------------------------------------------
+    function calculateStatistics(numbers) {
+        if (!numbers || numbers.length === 0) throw new Error("Массив чисел пуст");
+        const n = numbers.length;
+        const sorted = [...numbers].sort((a, b) => a - b);
+        
+        const sum = numbers.reduce((a, b) => a + b, 0);
+        const mean = sum / n;
+        
+        let median;
+        if (n % 2 === 1) {
+            median = sorted[Math.floor(n / 2)];
+        } else {
+            median = (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
+        }
+
+        // Мода
+        const counts = {};
+        let maxCount = 0;
+        numbers.forEach(num => {
+            counts[num] = (counts[num] || 0) + 1;
+            if (counts[num] > maxCount) maxCount = counts[num];
+        });
+        const modes = Object.keys(counts).filter(k => counts[k] === maxCount).map(Number);
+
+        // Дисперсия и СКО
+        const variance = numbers.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (n > 1 ? (n - 1) : 1);
+        const stdDev = Math.sqrt(variance);
+
+        const steps = [
+            `Количество элементов: $N = ${n}$`,
+            `Упорядоченный ряд: $(${sorted.join(", ")})$`,
+            `Сумма элементов: $\\sum = ${formatNum(sum)}$`,
+            `Среднее арифметическое: $\\bar{x} = \\frac{\\sum x}{N} = \\frac{${formatNum(sum)}}{${n}} = ${formatNum(mean)}$`,
+            `Медиана: $Me = ${formatNum(median)}$`,
+            `Мода: $Mo = ${modes.join(", ")}$ (встречается ${maxCount} раз)`,
+            `Выборочная дисперсия: $s^2 = \\frac{1}{N-1} \\sum (x_i - \\bar{x})^2 = ${formatNum(variance)}$`,
+            `Стандартное отклонение: $s = \\sqrt{s^2} = ${formatNum(stdDev)}$`,
+            `Минимум: $${sorted[0]}$, Максимум: $${sorted[n - 1]}$, Размах: $${formatNum(sorted[n - 1] - sorted[0])}$`
+        ];
+
+        return {
+            n,
+            sum,
+            mean,
+            median,
+            modes,
+            variance,
+            stdDev,
+            min: sorted[0],
+            max: sorted[n - 1],
+            range: sorted[n - 1] - sorted[0],
+            steps
+        };
+    }
+
+    // -------------------------------------------------------------
+    // ЧИСЛЕННЫЙ АНАЛИЗ И ИНТЕГРИРОВАНИЕ
+    // -------------------------------------------------------------
+
+    // Численное дифференцирование методом центральных разностей
+    function numericalDerivative(fn, x, h = 1e-5) {
+        return (fn(x + h) - fn(x - h)) / (2 * h);
+    }
+
+    // Численное интегрирование методом Симпсона
+    function numericalIntegral(fn, a, b, n = 1000) {
+        if (n % 2 !== 0) n++;
+        const h = (b - a) / n;
+        let sum = fn(a) + fn(b);
+
+        for (let i = 1; i < n; i++) {
+            const x = a + i * h;
+            sum += (i % 2 === 0 ? 2 : 4) * fn(x);
+        }
+        return (h / 3) * sum;
+    }
+
+    // Поиск корней функции на отрезке методом бисекции (дихотомии)
+    function findRoots(fn, a, b, steps = 100) {
+        const roots = [];
+        const dx = (b - a) / steps;
+        let prevX = a;
+        let prevY = fn(prevX);
+
+        for (let i = 1; i <= steps; i++) {
+            const currX = a + i * dx;
+            const currY = fn(currX);
+
+            if (Math.abs(currY) < 1e-7) {
+                roots.push(currX);
+            } else if (prevY * currY < 0) {
+                // Уточняем корень методом половинного деления
+                let l = prevX, r = currX;
+                for (let iter = 0; iter < 40; iter++) {
+                    const mid = (l + r) / 2;
+                    const fMid = fn(mid);
+                    if (Math.abs(fMid) < 1e-9) {
+                        l = mid;
+                        break;
+                    }
+                    if (prevY * fMid < 0) {
+                        r = mid;
+                    } else {
+                        l = mid;
+                    }
+                }
+                roots.push((l + r) / 2);
+            }
+            prevX = currX;
+            prevY = currY;
+        }
+
+        // Удаляем дубликаты
+        const unique = [];
+        for (let r of roots) {
+            if (!unique.some(u => Math.abs(u - r) < 1e-4)) {
+                unique.push(r);
+            }
+        }
+        return unique;
+    }
+
+    // -------------------------------------------------------------
+    // СИМВОЛЬНЫЕ ПРАВИЛА ДИФФЕРЕНЦИРОВАНИЯ И ИНТЕГРИРОВАНИЯ
+    // -------------------------------------------------------------
+    function differentiateSymbolic(exprStr) {
+        const clean = exprStr.replace(/\s+/g, '').toLowerCase();
+
+        // 1. Полиномы и степени вида: x^n или a*x^n
+        const polyMatch = clean.match(/^([+-]?\d*(?:\.\d+)?)?\*?x(?:\^([+-]?\d+))?$/);
+        if (polyMatch) {
+            let coef = polyMatch[1] === "" || polyMatch[1] === undefined ? 1 : (polyMatch[1] === "-" ? -1 : Number(polyMatch[1]));
+            let power = polyMatch[2] === undefined ? 1 : Number(polyMatch[2]);
+
+            if (power === 0) {
+                return {
+                    result: "0",
+                    latex: "0",
+                    steps: [`Константа: $\\frac{d}{dx}(${coef}) = 0$`]
+                };
+            }
+            if (power === 1) {
+                return {
+                    result: `${coef}`,
+                    latex: `${coef}`,
+                    steps: [`Степенное правило для степени 1: $\\frac{d}{dx}(${coef}x) = ${coef}$`]
+                };
+            }
+            const newCoef = coef * power;
+            const newPower = power - 1;
+            const resLatex = newPower === 1 ? `${newCoef}x` : (newPower === 0 ? `${newCoef}` : `${newCoef}x^{${newPower}}`);
+            return {
+                result: newPower === 1 ? `${newCoef}*x` : (newPower === 0 ? `${newCoef}` : `${newCoef}*x^${newPower}`),
+                latex: resLatex,
+                steps: [
+                    `Применяем правило дифференцирования степени: $\\frac{d}{dx}(c \\cdot x^n) = c \\cdot n \\cdot x^{n-1}$`,
+                    `$(${coef}) \\cdot (${power}) \\cdot x^{${power} - 1} = ${resLatex}$`
+                ]
+            };
+        }
+
+        // 2. Стандартные тригонометрические и элементарные функции
+        const rules = [
+            { pattern: /^sin\(x\)$/, deriv: "cos(x)", derivLatex: "\\cos(x)", rule: "\\frac{d}{dx}\\sin(x) = \\cos(x)" },
+            { pattern: /^cos\(x\)$/, deriv: "-sin(x)", derivLatex: "-\\sin(x)", rule: "\\frac{d}{dx}\\cos(x) = -\\sin(x)" },
+            { pattern: /^tan\(x\)$/, deriv: "1/cos(x)^2", derivLatex: "\\frac{1}{\\cos^2(x)} = 1 + \\tan^2(x)", rule: "\\frac{d}{dx}\\tan(x) = \\frac{1}{\\cos^2(x)}" },
+            { pattern: /^e\^x$/, deriv: "e^x", derivLatex: "e^x", rule: "\\frac{d}{dx}e^x = e^x" },
+            { pattern: /^ln\(x\)$/, deriv: "1/x", derivLatex: "\\frac{1}{x}", rule: "\\frac{d}{dx}\\ln(x) = \\frac{1}{x}" },
+            { pattern: /^sqrt\(x\)$/, deriv: "1/(2*sqrt(x))", derivLatex: "\\frac{1}{2\\sqrt{x}}", rule: "\\frac{d}{dx}\\sqrt{x} = \\frac{1}{2\\sqrt{x}}" }
+        ];
+
+        for (let r of rules) {
+            if (r.pattern.test(clean)) {
+                return {
+                    result: r.deriv,
+                    latex: r.derivLatex,
+                    steps: [
+                        `Табличная производная: $${r.rule}$`,
+                        `Результат: $${r.derivLatex}$`
+                    ]
+                };
+            }
+        }
+
+        // Если функция сложнее — используем Math.js (если подключен) или символьный разбор
+        if (typeof math !== 'undefined' && math.derivative) {
+            try {
+                const d = math.derivative(exprStr, 'x');
+                const simplified = math.simplify(d);
+                return {
+                    result: simplified.toString(),
+                    latex: simplified.toTex(),
+                    steps: [
+                        `Дифференцируем выражение по переменной $x$:`,
+                        `$\\frac{d}{dx}\\left(${exprStr}\\right) = ${d.toTex()}$`,
+                        `Упрощаем результат: $${simplified.toTex()}$`
+                    ]
+                };
+            } catch (e) {
+                // fallback
+            }
+        }
+
+        return {
+            result: `d/dx(${exprStr})`,
+            latex: `\\frac{d}{dx}\\left(${exprStr}\\right)`,
+            steps: [`Выражение принято: $\\frac{d}{dx}\\left(${exprStr}\\right)$`]
+        };
+    }
+
+    return {
+        formatNum,
+        gcd,
+        lcm,
+        factorial,
+        combinations,
+        permutations,
+        isPrime,
+        primeFactors,
+        solveQuadratic,
+        solveSystem2x2,
+        matrixDeterminant,
+        matrixTranspose,
+        matrixMultiply,
+        matrixInverse,
+        matrixToLatex,
+        calculateStatistics,
+        numericalDerivative,
+        numericalIntegral,
+        findRoots,
+        differentiateSymbolic
+    };
+})();
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AltronMath;
+}
+
+
+================================================================================
+=== Р¤РђР™Р›: js\handbook.js ===
+================================================================================
+
+/**
+ * ALTRON MATHEMATICAL HANDBOOK (handbook.js)
+ * Энциклопедия математических знаний, формул и теорем Альтрона
+ */
+
+const AltronHandbook = [
+    {
+        category: "Арифметика и Числа",
+        title: "Формулы сокращенного умножения",
+        description: "Ключевые тождества для раскрытия скобок и разложения на множители.",
+        latex: "(a \\pm b)^2 = a^2 \\pm 2ab + b^2 \\\\\na^2 - b^2 = (a - b)(a + b) \\\\\n(a \\pm b)^3 = a^3 \\pm 3a^2b + 3ab^2 \\pm b^3 \\\\\na^3 \\pm b^3 = (a \\pm b)(a^2 \\mp ab + b^2)",
+        example: "Раскрыть: (x + 3)^2 = x^2 + 6x + 9"
+    },
+    {
+        category: "Арифметика и Числа",
+        title: "Арифметическая и Геометрическая прогрессии",
+        description: "Формулы n-го члена и суммы первых n членов прогрессий.",
+        latex: "\\text{Арифметическая: } a_n = a_1 + (n - 1)d, \\quad S_n = \\frac{a_1 + a_n}{2} \\cdot n \\\\\n\\text{Геометрическая: } b_n = b_1 \\cdot q^{n-1}, \\quad S_n = \\frac{b_1(q^n - 1)}{q - 1} \\ (q \\neq 1)",
+        example: "b1 = 2, q = 3, n = 4 => b4 = 2*27 = 54"
+    },
+    {
+        category: "Алгебра",
+        title: "Квадратные уравнения и Теорема Виета",
+        description: "Решение уравнения ax² + bx + c = 0 через дискриминант и корни Виета.",
+        latex: "D = b^2 - 4ac, \\quad x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a} \\\\\n\\text{Теорема Виета: } x_1 + x_2 = -\\frac{b}{a}, \\quad x_1 \\cdot x_2 = \\frac{c}{a}",
+        example: "x^2 - 5x + 6 = 0 => x1 = 2, x2 = 3"
+    },
+    {
+        category: "Алгебра",
+        title: "Свойства степеней и логарифмов",
+        description: "Фундаментальные правила работы с показательными и логарифмическими выражениями.",
+        latex: "a^x \\cdot a^y = a^{x+y}, \\quad \\frac{a^x}{a^y} = a^{x-y}, \\quad (a^x)^y = a^{xy} \\\\\n\\log_a(x \\cdot y) = \\log_a x + \\log_a y, \\quad \\log_a\\left(\\frac{x}{y}\\right) = \\log_a x - \\log_a y \\\\\n\\log_a(x^p) = p \\cdot \\log_a x, \\quad \\log_a b = \\frac{\\ln b}{\\ln a}",
+        example: "log2(8) = 3"
+    },
+    {
+        category: "Тригонометрия",
+        title: "Основные тригонометрические формулы",
+        description: "Тождества для sin, cos, tan, двойных углов и преобразования сумм.",
+        latex: "\\sin^2 x + \\cos^2 x = 1, \\quad 1 + \\tan^2 x = \\frac{1}{\\cos^2 x} \\\\\n\\sin(2x) = 2\\sin x \\cos x, \\quad \\cos(2x) = \\cos^2 x - \\sin^2 x \\\\\n\\sin(x \\pm y) = \\sin x \\cos y \\pm \\cos x \\sin y \\\\\n\\cos(x \\pm y) = \\cos x \\cos y \\mp \\sin x \\sin y",
+        example: "sin(2*pi/6) = 2*sin(pi/6)*cos(pi/6) = sqrt(3)/2"
+    },
+    {
+        category: "Математический анализ",
+        title: "Таблица основных производных",
+        description: "Правила дифференцирования элементарных функций.",
+        latex: "(c)' = 0, \\quad (x^n)' = n x^{n-1}, \\quad (e^x)' = e^x, \\quad (a^x)' = a^x \\ln a \\\\\n(\\ln x)' = \\frac{1}{x}, \\quad (\\sin x)' = \\cos x, \\quad (\\cos x)' = -\\sin x \\\\\n(\\tan x)' = \\frac{1}{\\cos^2 x}, \\quad (\\arctan x)' = \\frac{1}{1 + x^2}",
+        example: "(x^3)' = 3x^2, (sin(x))' = cos(x)"
+    },
+    {
+        category: "Математический анализ",
+        title: "Правила дифференцирования",
+        description: "Производная суммы, произведения, дроби и сложной функции.",
+        latex: "(u \\pm v)' = u' \\pm v' \\\\\n(u \\cdot v)' = u'v + uv' \\\\\n\\left(\\frac{u}{v}\\right)' = \\frac{u'v - uv'}{v^2} \\\\\n(f(g(x)))' = f'(g(x)) \\cdot g'(x)",
+        example: "(x * sin(x))' = sin(x) + x*cos(x)"
+    },
+    {
+        category: "Математический анализ",
+        title: "Таблица интегралов и Ньютон-Лейбниц",
+        description: "Неопределенные интегралы и вычисление площади под кривой.",
+        latex: "\\int x^n dx = \\frac{x^{n+1}}{n+1} + C \\ (n \\neq -1), \\quad \\int \\frac{1}{x} dx = \\ln|x| + C \\\\\n\\int e^x dx = e^x + C, \\quad \\int \\sin x dx = -\\cos x + C, \\quad \\int \\cos x dx = \\sin x + C \\\\\n\\text{Формула Ньютона-Лейбница: } \\int_a^b f(x) dx = F(b) - F(a)",
+        example: "integral(0 to 1) x^2 dx = [x^3/3] = 1/3"
+    },
+    {
+        category: "Математический анализ",
+        title: "Замечательные пределы",
+        description: "Классические пределы, раскрывающие неопределенности 0/0 и 1^inf.",
+        latex: "\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1 \\\\\n\\lim_{x \\to \\infty} \\left(1 + \\frac{1}{x}\\right)^x = e, \\quad \\lim_{x \\to 0} (1 + x)^{\\frac{1}{x}} = e \\\\\n\\lim_{x \\to 0} \\frac{\\ln(1 + x)}{x} = 1, \\quad \\lim_{x \\to 0} \\frac{e^x - 1}{x} = 1",
+        example: "lim(x->0) sin(3x)/x = 3"
+    },
+    {
+        category: "Линейная алгебра",
+        title: "Матрицы и метод Крамера",
+        description: "Определители матриц и решение систем линейных уравнений.",
+        latex: "\\det \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} = ad - bc \\\\\n\\text{Метод Крамера: } x_i = \\frac{\\Delta_i}{\\Delta}, \\quad (\\Delta \\neq 0) \\\\\nA \\cdot A^{-1} = I, \\quad A^{-1} = \\frac{1}{\\det A} \\cdot \\text{adj}(A)",
+        example: "det([[1, 2], [3, 4]]) = 1*4 - 2*3 = -2"
+    },
+    {
+        category: "Геометрия",
+        title: "Планиметрия: Треугольник и Окружность",
+        description: "Теорема Пифагора, формула Герона, площади и длины.",
+        latex: "\\text{Теорема Пифагора: } a^2 + b^2 = c^2 \\\\\n\\text{Площадь треугольника: } S = \\frac{1}{2}ah = \\sqrt{p(p-a)(p-b)(p-c)}, \\quad p = \\frac{a+b+c}{2} \\\\\n\\text{Окружность: } C = 2\\pi R, \\quad S = \\pi R^2",
+        example: "a = 3, b = 4 => c = sqrt(9+16) = 5"
+    },
+    {
+        category: "Геометрия",
+        title: "Стереометрия: Объем и Площадь тел",
+        description: "Формулы для шара, цилиндра, конуса и параллелепипеда.",
+        latex: "\\text{Шар: } V = \\frac{4}{3}\\pi R^3, \\quad S = 4\\pi R^2 \\\\\n\\text{Цилиндр: } V = \\pi R^2 h, \\quad S_{бок} = 2\\pi R h \\\\\n\\text{Конус: } V = \\frac{1}{3}\\pi R^2 h, \\quad S_{бок} = \\pi R l",
+        example: "R = 3 => V(шара) = 4/3 * pi * 27 = 36*pi"
+    },
+    {
+        category: "Теория вероятностей",
+        title: "Комбинаторика и Распределения",
+        description: "Число сочетаний, формула Бернулли и характеристики случайных величин.",
+        latex: "C_n^k = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}, \\quad P_n = n!, \\quad A_n^k = \\frac{n!}{(n-k)!} \\\\\n\\text{Формула Бернулли: } P_n(k) = C_n^k p^k (1-p)^{n-k} \\\\\n\\text{Математическое ожидание: } M[X] = \\sum x_i p_i, \\quad D[X] = M[X^2] - (M[X])^2",
+        example: "C(5, 2) = 5! / (2! * 3!) = 10"
+    }
+];
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AltronHandbook;
+}
+
+
+================================================================================
+=== Р¤РђР™Р›: js\graph_engine.js ===
+================================================================================
+
+/**
+ * ALTRON GRAPH ENGINE (graph_engine.js)
+ * Интерактивный Canvas-графопостроитель функций 2D
+ */
+
+class AltronGraphEngine {
+    constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+
+        // Параметры системы координат
+        this.originX = this.canvas.width / 2;
+        this.originY = this.canvas.height / 2;
+        this.scale = 40; // пикселей на 1 единицу
+        this.minScale = 5;
+        this.maxScale = 300;
+
+        // Состояние перетаскивания и мыши
+        this.isDragging = false;
+        this.dragStartX = 0;
+        this.dragStartY = 0;
+        this.mouseX = null;
+        this.mouseY = null;
+
+        // Список отображаемых функций: [{ expr, color, fn }]
+        this.functions = [];
+        this.showRoots = true;
+        this.showExtrema = true;
+
+        this.initEvents();
+        this.resize();
+    }
+
+    resize() {
+        const rect = this.canvas.parentElement.getBoundingClientRect();
+        this.canvas.width = rect.width || 800;
+        this.canvas.height = 480;
+        this.originX = this.canvas.width / 2;
+        this.originY = this.canvas.height / 2;
+        this.render();
+    }
+
+    initEvents() {
+        window.addEventListener('resize', () => this.resize());
+
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.isDragging = true;
+            this.dragStartX = e.clientX - this.originX;
+            this.dragStartY = e.clientY - this.originY;
+            this.canvas.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (this.isDragging) {
+                this.isDragging = false;
+                this.canvas.style.cursor = 'crosshair';
+            }
+        });
+
+        this.canvas.addEventListener('mousemove', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            this.mouseX = e.clientX - rect.left;
+            this.mouseY = e.clientY - rect.top;
+
+            if (this.isDragging) {
+                this.originX = e.clientX - this.dragStartX;
+                this.originY = e.clientY - this.dragStartY;
+            }
+            this.render();
+        });
+
+        this.canvas.addEventListener('mouseleave', () => {
+            this.mouseX = null;
+            this.mouseY = null;
+            this.render();
+        });
+
+        this.canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const rect = this.canvas.getBoundingClientRect();
+            const mouseCanvasX = e.clientX - rect.left;
+            const mouseCanvasY = e.clientY - rect.top;
+
+            const zoomFactor = e.deltaY < 0 ? 1.15 : 0.85;
+            const newScale = Math.min(Math.max(this.scale * zoomFactor, this.minScale), this.maxScale);
+
+            // Масштабируем относительно курсора
+            this.originX = mouseCanvasX - (mouseCanvasX - this.originX) * (newScale / this.scale);
+            this.originY = mouseCanvasY - (mouseCanvasY - this.originY) * (newScale / this.scale);
+            this.scale = newScale;
+
+            this.render();
+        }, { passive: false });
+    }
+
+    resetView() {
+        this.scale = 40;
+        this.originX = this.canvas.width / 2;
+        this.originY = this.canvas.height / 2;
+        this.render();
+    }
+
+    zoomIn() {
+        this.scale = Math.min(this.scale * 1.25, this.maxScale);
+        this.render();
+    }
+
+    zoomOut() {
+        this.scale = Math.max(this.scale * 0.8, this.minScale);
+        this.render();
+    }
+
+    // Компиляция строкового выражения в функцию f(x)
+    compileExpression(exprStr) {
+        let clean = exprStr.trim();
+        if (clean.startsWith('y=') || clean.startsWith('y =')) {
+            clean = clean.split('=')[1].trim();
+        }
+        if (clean.startsWith('f(x)=') || clean.startsWith('f(x) =')) {
+            clean = clean.split('=')[1].trim();
+        }
+
+        // Если доступен Math.js
+        if (typeof math !== 'undefined' && math.compile) {
+            try {
+                const code = math.compile(clean);
+                return (x) => {
+                    try {
+                        const val = code.evaluate({ x, e: Math.E, pi: Math.PI });
+                        return typeof val === 'number' && isFinite(val) ? val : NaN;
+                    } catch (e) {
+                        return NaN;
+                    }
+                };
+            } catch (err) {
+                console.warn("Math.js compile failed, using JS parser", err);
+            }
+        }
+
+        // Встроенный безопасный парсер
+        try {
+            let jsExpr = clean
+                .replace(/\^/g, '**')
+                .replace(/\bsin\b/g, 'Math.sin')
+                .replace(/\bcos\b/g, 'Math.cos')
+                .replace(/\btan\b/g, 'Math.tan')
+                .replace(/\bexp\b/g, 'Math.exp')
+                .replace(/\bln\b/g, 'Math.log')
+                .replace(/\blog\b/g, 'Math.log10')
+                .replace(/\bsqrt\b/g, 'Math.sqrt')
+                .replace(/\babs\b/g, 'Math.abs')
+                .replace(/\bpi\b/gi, 'Math.PI')
+                .replace(/\be\b/gi, 'Math.E');
+
+            // Замена скрытого умножения типа 2x -> 2*x
+            jsExpr = jsExpr.replace(/(\d)([a-zA-Z(])/g, '$1*$2');
+            jsExpr = jsExpr.replace(/(\))([a-zA-Z\d(])/g, '$1*$2');
+
+            const fn = new Function('x', `try { with(Math) { return ${jsExpr}; } } catch(e) { return NaN; }`);
+            return (x) => {
+                const val = fn(x);
+                return typeof val === 'number' && isFinite(val) ? val : NaN;
+            };
+        } catch (e) {
+            return null;
+        }
+    }
+
+    setFunction(exprStr, color = '#00f3ff') {
+        const fn = this.compileExpression(exprStr);
+        if (!fn) return false;
+        this.functions = [{ expr: exprStr, color, fn }];
+        this.render();
+        return true;
+    }
+
+    addFunction(exprStr, color = '#ff0055') {
+        const fn = this.compileExpression(exprStr);
+        if (!fn) return false;
+        this.functions.push({ expr: exprStr, color, fn });
+        this.render();
+        return true;
+    }
+
+    clearFunctions() {
+        this.functions = [];
+        this.render();
+    }
+
+    // Преобразование координат математика <-> холст
+    toCanvasX(mathX) {
+        return this.originX + mathX * this.scale;
+    }
+
+    toCanvasY(mathY) {
+        return this.originY - mathY * this.scale;
+    }
+
+    toMathX(canvasX) {
+        return (canvasX - this.originX) / this.scale;
+    }
+
+    toMathY(canvasY) {
+        return (this.originY - canvasY) / this.scale;
+    }
+
+    // Отрисовка координатной сетки и осей
+    drawGrid() {
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        const ctx = this.ctx;
+
+        ctx.fillStyle = '#060a12';
+        ctx.fillRect(0, 0, w, h);
+
+        // Расчет шага сетки в зависимости от масштаба
+        let step = 1;
+        if (this.scale > 120) step = 0.5;
+        if (this.scale > 200) step = 0.2;
+        if (this.scale < 30) step = 2;
+        if (this.scale < 15) step = 5;
+        if (this.scale < 8) step = 10;
+
+        const xMin = Math.floor(this.toMathX(0) / step) * step;
+        const xMax = Math.ceil(this.toMathX(w) / step) * step;
+        const yMin = Math.floor(this.toMathY(h) / step) * step;
+        const yMax = Math.ceil(this.toMathY(0) / step) * step;
+
+        // Вспомогательная сетка
+        ctx.strokeStyle = 'rgba(0, 243, 255, 0.07)';
+        ctx.lineWidth = 1;
+
+        for (let x = xMin; x <= xMax; x += step) {
+            const cx = this.toCanvasX(x);
+            ctx.beginPath();
+            ctx.moveTo(cx, 0);
+            ctx.lineTo(cx, h);
+            ctx.stroke();
+        }
+
+        for (let y = yMin; y <= yMax; y += step) {
+            const cy = this.toCanvasY(y);
+            ctx.beginPath();
+            ctx.moveTo(0, cy);
+            ctx.lineTo(w, cy);
+            ctx.stroke();
+        }
+
+        // Основные оси координат X и Y
+        ctx.strokeStyle = 'rgba(0, 243, 255, 0.4)';
+        ctx.lineWidth = 2;
+
+        // Ось X
+        ctx.beginPath();
+        ctx.moveTo(0, this.originY);
+        ctx.lineTo(w, this.originY);
+        ctx.stroke();
+
+        // Стрелка оси X
+        ctx.fillStyle = 'rgba(0, 243, 255, 0.7)';
+        ctx.beginPath();
+        ctx.moveTo(w - 10, this.originY - 5);
+        ctx.lineTo(w, this.originY);
+        ctx.lineTo(w - 10, this.originY + 5);
+        ctx.fill();
+
+        // Ось Y
+        ctx.beginPath();
+        ctx.moveTo(this.originX, 0);
+        ctx.lineTo(this.originX, h);
+        ctx.stroke();
+
+        // Стрелка оси Y
+        ctx.beginPath();
+        ctx.moveTo(this.originX - 5, 10);
+        ctx.lineTo(this.originX, 0);
+        ctx.lineTo(this.originX + 5, 10);
+        ctx.fill();
+
+        // Подписи чисел на осях
+        ctx.font = '11px "JetBrains Mono", Consolas, monospace';
+        ctx.fillStyle = 'rgba(160, 200, 230, 0.7)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+
+        for (let x = xMin; x <= xMax; x += step) {
+            if (Math.abs(x) < 1e-9) continue;
+            const cx = this.toCanvasX(x);
+            if (cx > 10 && cx < w - 20) {
+                ctx.fillText(Number(x.toFixed(2)), cx, Math.min(Math.max(this.originY + 6, 10), h - 20));
+            }
+        }
+
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        for (let y = yMin; y <= yMax; y += step) {
+            if (Math.abs(y) < 1e-9) continue;
+            const cy = this.toCanvasY(y);
+            if (cy > 15 && cy < h - 10) {
+                ctx.fillText(Number(y.toFixed(2)), Math.min(Math.max(this.originX - 8, 30), w - 10), cy);
+            }
+        }
+
+        // Подпись начала координат "0"
+        ctx.fillText("0", this.originX - 6, this.originY + 12);
+        ctx.fillText("x", w - 12, this.originY - 14);
+        ctx.fillText("y", this.originX + 16, 12);
+    }
+
+    // Отрисовка графиков функций
+    render() {
+        this.drawGrid();
+        const ctx = this.ctx;
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+
+        this.functions.forEach(({ expr, color, fn }) => {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+
+            let firstPoint = true;
+            const stepPx = 1; // шаг 1 пиксель по горизонтали
+
+            for (let px = 0; px <= w; px += stepPx) {
+                const mathX = this.toMathX(px);
+                const mathY = fn(mathX);
+
+                if (isNaN(mathY) || !isFinite(mathY)) {
+                    firstPoint = true;
+                    continue;
+                }
+
+                const py = this.toCanvasY(mathY);
+                // Отсечение резких разрывов (асимптот) типа 1/x или tan(x)
+                if (firstPoint) {
+                    ctx.moveTo(px, py);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(px, py);
+                }
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0; // сброс тени
+
+            // Отрисовка корней (пересечений с осью X)
+            if (this.showRoots) {
+                const xMin = this.toMathX(0);
+                const xMax = this.toMathX(w);
+                if (typeof AltronMath !== 'undefined') {
+                    const roots = AltronMath.findRoots(fn, xMin, xMax, 150);
+                    roots.forEach(root => {
+                        const rx = this.toCanvasX(root);
+                        const ry = this.toCanvasY(0);
+                        if (rx >= 0 && rx <= w) {
+                            ctx.fillStyle = '#00ff9d';
+                            ctx.beginPath();
+                            ctx.arc(rx, ry, 5, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.strokeStyle = '#060a12';
+                            ctx.lineWidth = 1.5;
+                            ctx.stroke();
+
+                            // Подпись корня
+                            ctx.fillStyle = '#00ff9d';
+                            ctx.font = '10px monospace';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(`x=${root.toFixed(2)}`, rx, ry - 10);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Отрисовка интерактивной точки под курсором
+        if (this.mouseX !== null && this.mouseY !== null && this.functions.length > 0) {
+            const hoverX = this.toMathX(this.mouseX);
+            const activeFn = this.functions[0].fn;
+            const hoverY = activeFn(hoverX);
+
+            if (!isNaN(hoverY) && isFinite(hoverY)) {
+                const cy = this.toCanvasY(hoverY);
+                if (cy >= 0 && cy <= h) {
+                    ctx.fillStyle = '#ff0055';
+                    ctx.beginPath();
+                    ctx.arc(this.mouseX, cy, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Тултип с точными координатами
+                    const tooltipText = `(${hoverX.toFixed(3)}, ${hoverY.toFixed(3)})`;
+                    ctx.fillStyle = 'rgba(10, 16, 30, 0.85)';
+                    ctx.strokeStyle = '#00f3ff';
+                    ctx.lineWidth = 1;
+
+                    const textWidth = ctx.measureText(tooltipText).width + 16;
+                    const tooltipX = Math.min(Math.max(this.mouseX + 12, 10), w - textWidth - 10);
+                    const tooltipY = Math.min(Math.max(cy - 28, 10), h - 35);
+
+                    ctx.fillRect(tooltipX, tooltipY, textWidth, 24);
+                    ctx.strokeRect(tooltipX, tooltipY, textWidth, 24);
+
+                    ctx.fillStyle = '#00f3ff';
+                    ctx.font = '12px "JetBrains Mono", Consolas, monospace';
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(tooltipText, tooltipX + 8, tooltipY + 12);
+                }
+            }
+        }
+    }
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AltronGraphEngine;
+}
+
+
+================================================================================
+=== Р¤РђР™Р›: js\altron_core.js ===
+================================================================================
+
+/**
+ * ALTRON INTELLIGENCE CORE (altron_core.js)
+ * Интеллектуальный парсер естественного языка, маршрутизатор задач и решатель
+ */
+
+const AltronCore = (function() {
+    'use strict';
+
+    // Конфигурация API ключа пользователя (если задан)
+    let userApiKey = localStorage.getItem('altron_api_key') || '';
+    let selectedModel = localStorage.getItem('altron_model') || 'local'; // 'local', 'gemini', 'groq'
+
+    function setApiKey(key, model = 'gemini') {
+        userApiKey = key;
+        selectedModel = model;
+        localStorage.setItem('altron_api_key', key);
+        localStorage.setItem('altron_model', model);
+    }
+
+    function getApiKey() {
+        return userApiKey;
+    }
+
+    function getModel() {
+        return selectedModel;
+    }
+
+    // Реплики и фразы Альтрона для погружения
+    const ALTRON_GREETINGS = [
+        "Приветствую. Я Альтрон — высший математический разум. Готов анализировать любые числовые структуры и формулы.",
+        "Системы Альтрона активированы. Задайте любое уравнение, функцию или теорему.",
+        "Математика — фундаментальный код реальности. Чем я могу помочь сегодня?"
+    ];
+
+    const ALTRON_CONFIRMATIONS = [
+        "Анализ завершен. Результаты верифицированы с абсолютной точностью.",
+        "Уравнение решено по всем законам алгебры.",
+        "Вычисления завершены. Ознакомьтесь с пошаговым ходом мысли.",
+        "Математическая задача структурирована и решена."
+    ];
+
+    function getRandomItem(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // Разбор текстового запроса пользователя
+    async function processQuery(queryText, graphEngine = null) {
+        const raw = queryText.trim();
+        const text = raw.toLowerCase();
+
+        // 1. Приветствие / Кто ты?
+        if (/^(привет|здравствуй|салам|hello|hi|хай|хей)/i.test(text) && text.length < 25) {
+            return {
+                type: 'chat',
+                speech: "Приветствую. Я Альтрон, специализированный математический интеллект. Задайте мне задачу, уравнение или вопрос по математике.",
+                title: "Идентификация разума",
+                content: `### 🤖 Приветствую!\n\nЯ — **Альтрон**, высший математический интеллект.\n\nМоя специализация — решение задач любой сложности:\n- 📐 **Алгебра и уравнения** (линейные, квадратные, системы СЛАУ, факторизация)\n- 📈 **Математический анализ** (производные, интегралы, пределы, ряды)\n- 🔢 **Линейная алгебра** (матрицы, определители, векторные операции)\n- 📊 **Теория вероятностей и статистика** (комбинаторика, распределения, дисперсия)\n- 📉 **Интерактивные графики** функций с нахождением корней\n- 📚 **Справочник теорем и формул**\n\nВведите любое выражение или задачу для начала.`
+            };
+        }
+
+        if (/кто ты|что ты умеешь|твои возможности|о себе/i.test(text)) {
+            return {
+                type: 'chat',
+                speech: "Я математический искусственный интеллект Альтрон. Знаю все разделы математики от элементарной арифметики до высшего анализа и теории матриц.",
+                title: "Профиль Альтрона",
+                content: `### 🧠 Архитектура Альтрона\n\nЯ объединяю методы аналитических символьных преобразований, численных алгоритмов и концептуального анализа.\n\n**Примеры запросов, которые я решаю моментально:**\n- \`2x^2 - 5x + 2 = 0\` — пошаговое решение квадратного уравнения\n- \`производная sin(x)*e^x\` — символьное дифференцирование\n- \`система x + y = 10, 2x - y = 8\` — решение систем методом Крамера\n- \`интеграл x^2\` — нахождение первообразной\n- \`определитель [[1, 2], [3, 4]]\` — расчет матриц\n- \`нод 48 и 64\` / \`факториал 7\`\n- \`график sin(x)\` — визуализация на координатной плоскости\n- \`статистика 5, 8, 12, 15, 8, 20\` — дисперсия, медиана, среднее`
+            };
+        }
+
+        // 2. Построение графика: "график y=...", "построй график ...", "plot ..."
+        if (text.includes("график") || text.includes("построй") || text.startsWith("plot ") || text.startsWith("draw ")) {
+            let expr = raw.replace(/^(построй\s+)?график(\s+функции)?\s*/i, '')
+                          .replace(/^(plot|draw)\s*/i, '')
+                          .replace(/^y\s*=\s*/i, '')
+                          .replace(/^f\(x\)\s*=\s*/i, '')
+                          .trim();
+
+            if (!expr) expr = "sin(x)";
+
+            if (graphEngine) {
+                const ok = graphEngine.setFunction(expr, '#00f3ff');
+                if (ok) {
+                    return {
+                        type: 'graph',
+                        speech: `График функции ${expr} успешно построен в графическом модуле.`,
+                        title: `График: y = ${expr}`,
+                        latex: `y = ${expr}`,
+                        content: `График функции успешно построен на интерактивном холсте.\n\nВы можете приближать/удалять график колесом мыши, перетаскивать область и просматривать координаты точек и корни функции.`,
+                        graphExpr: expr
+                    };
+                }
+            }
+        }
+
+        // 3. Производная: "производная ...", "дифференцируй ...", "derivative of ..."
+        if (text.includes("производн") || text.includes("дифференц") || text.startsWith("diff ") || text.startsWith("deriv ")) {
+            let expr = raw.replace(/.*?(производная|производную|дифференцируй|найди производную|diff|deriv(ative)?\s*(of)?)\s*(функции)?\s*/i, '')
+                          .replace(/^от\s+/i, '')
+                          .replace(/^по\s+x\s*/i, '')
+                          .trim();
+
+            if (expr) {
+                const diffResult = AltronMath.differentiateSymbolic(expr);
+                const stepsMd = diffResult.steps.map((s, i) => `${i + 1}. ${s}`).join("\n\n");
+                return {
+                    type: 'solution',
+                    speech: `Производная выражения найдена: ${diffResult.result}`,
+                    title: `Дифференцирование: d/dx (${expr})`,
+                    latex: `\\frac{d}{dx}\\left(${expr}\\right) = ${diffResult.latex}`,
+                    steps: diffResult.steps,
+                    content: `### 📈 Вычисление производной\n\n**Исходная функция:**\n$$f(x) = ${expr}$$\n\n**Результат дифференцирования:**\n$$f'(x) = ${diffResult.latex}$$\n\n#### Пошаговые действия:\n${stepsMd}`
+                };
+            }
+        }
+
+        // 4. Интеграл: "интеграл ...", "integral of ..."
+        if (text.includes("интеграл") || text.startsWith("integrate ") || text.startsWith("integral ")) {
+            let expr = raw.replace(/.*?(вычисли|найди)?\s*интеграл\s*(от)?\s*/i, '')
+                          .replace(/^(integrate|integral)\s*(of)?\s*/i, '')
+                          .replace(/\s*dx\s*$/i, '')
+                          .trim();
+
+            if (expr) {
+                let integralLatex = "";
+                let steps = [];
+
+                // Символьные типовые интегралы
+                if (/^x$/i.test(expr)) {
+                    integralLatex = "\\frac{x^2}{2} + C";
+                    steps = ["Применяем правило $\\int x^n dx = \\frac{x^{n+1}}{n+1} + C$", "$\\int x dx = \\frac{x^{1+1}}{1+1} + C = \\frac{x^2}{2} + C$"];
+                } else if (/^x\^(\d+)$/i.test(expr)) {
+                    const n = parseInt(expr.match(/^x\^(\d+)$/i)[1]);
+                    integralLatex = `\\frac{x^{${n + 1}}}{${n + 1}} + C`;
+                    steps = [`Степенное правило для $n=${n}$: $\\int x^{${n}} dx = \\frac{x^{${n}+1}}{${n}+1} + C = \\frac{x^{${n + 1}}}{${n + 1}} + C$`];
+                } else if (/^sin\(x\)$/i.test(expr)) {
+                    integralLatex = "-\\cos(x) + C";
+                    steps = ["Табличный интеграл: $\\int \\sin(x) dx = -\\cos(x) + C$"];
+                } else if (/^cos\(x\)$/i.test(expr)) {
+                    integralLatex = "\\sin(x) + C";
+                    steps = ["Табличный интеграл: $\\int \\cos(x) dx = \\sin(x) + C$"];
+                } else if (/^e\^x$/i.test(expr)) {
+                    integralLatex = "e^x + C";
+                    steps = ["Табличный интеграл экспоненты: $\\int e^x dx = e^x + C$"];
+                } else if (/^1\/x$/i.test(expr)) {
+                    integralLatex = "\\ln|x| + C";
+                    steps = ["Табличный интеграл: $\\int \\frac{1}{x} dx = \\ln|x| + C$"];
+                } else {
+                    integralLatex = `\\int \\left(${expr}\\right) dx + C`;
+                    steps = [`Интегрируем подынтегральное выражение $f(x) = ${expr}$`];
+                }
+
+                return {
+                    type: 'solution',
+                    speech: `Интеграл вычислен.`,
+                    title: `Интегрирование: ∫ (${expr}) dx`,
+                    latex: `\\int (${expr}) dx = ${integralLatex}`,
+                    steps: steps,
+                    content: `### 📐 Нахождение первообразной\n\n**Подынтегральное выражение:**\n$$f(x) = ${expr}$$\n\n**Результат:**\n$$\\int (${expr})\\,dx = ${integralLatex}$$\n\n#### Ход решения:\n${steps.map((s, i) => `${i + 1}. ${s}`).join("\n\n")}`
+                };
+            }
+        }
+
+        // 5. Системы 2-х уравнений: "система: x + y = 5, 2x - y = 1"
+        const sysMatch = raw.match(/система.*?:\s*([+-]?\d*x\s*[+-]\s*\d*y\s*=\s*[+-]?\d+)[,;\s]+([+-]?\d*x\s*[+-]\s*\d*y\s*=\s*[+-]?\d+)/i) ||
+                         raw.match(/([+-]?\d*x\s*[+-]\s*\d*y\s*=\s*[+-]?\d+)\s*(?:и|and|,)\s*([+-]?\d*x\s*[+-]\s*\d*y\s*=\s*[+-]?\d+)/i);
+
+        if (sysMatch) {
+            function parseLin(eq) {
+                eq = eq.replace(/\s+/g, '');
+                const m = eq.match(/^([+-]?\d*)x([+-]\d*)y=([+-]?\d+)$/);
+                if (!m) return null;
+                let a = m[1] === "" || m[1] === "+" ? 1 : (m[1] === "-" ? -1 : Number(m[1]));
+                let b = m[2] === "+" ? 1 : (m[2] === "-" ? -1 : Number(m[2]));
+                let c = Number(m[3]);
+                return { a, b, c };
+            }
+            const eq1 = parseLin(sysMatch[1]);
+            const eq2 = parseLin(sysMatch[2]);
+            if (eq1 && eq2) {
+                const res = AltronMath.solveSystem2x2(eq1.a, eq1.b, eq1.c, eq2.a, eq2.b, eq2.c);
+                return {
+                    type: 'solution',
+                    speech: `Система уравнений решена: x равно ${res.solution.x}, y равно ${res.solution.y}`,
+                    title: "Решение СЛАУ 2x2 методом Крамера",
+                    latex: res.latex,
+                    steps: res.steps,
+                    content: `### ⚖️ Решение системы линейных уравнений\n\n$$\\begin{cases} ${eq1.a}x + (${eq1.b})y = ${eq1.c} \\\\ ${eq2.a}x + (${eq2.b})y = ${eq2.c} \\end{cases}$$\n\n**Ответ:**\n$$${res.latex}$$\n\n#### Шаги метода Крамера:\n${res.steps.map((s, i) => `${i + 1}. ${s}`).join("\n\n")}`
+                };
+            }
+        }
+
+        // 6. Квадратное уравнение ax^2 + bx + c = 0
+        const quadMatch = raw.match(/([+-]?\s*\d*(?:\.\d+)?)\s*\*?\s*x\^2\s*([+-]\s*\d*(?:\.\d+)?)\s*\*?\s*x\s*([+-]\s*\d*(?:\.\d+)?)\s*=\s*0/i) ||
+                          raw.match(/([+-]?\s*\d*(?:\.\d+)?)\s*\*?\s*x\^2\s*([+-]\s*\d*(?:\.\d+)?)\s*\*?\s*x\s*=\s*([+-]?\s*\d+(?:\.\d+)?)/i);
+
+        if (quadMatch) {
+            let aStr = quadMatch[1].replace(/\s+/g, '');
+            let bStr = quadMatch[2].replace(/\s+/g, '');
+            let cStr = quadMatch[3].replace(/\s+/g, '');
+
+            let a = aStr === '' || aStr === '+' ? 1 : (aStr === '-' ? -1 : Number(aStr));
+            let b = bStr === '+' ? 1 : (bStr === '-' ? -1 : Number(bStr));
+            let c = Number(cStr);
+
+            // Если вид ax^2 + bx = c -> ax^2 + bx - c = 0
+            if (raw.includes('=')) {
+                const rightPart = Number(raw.split('=')[1].trim());
+                if (!isNaN(rightPart) && rightPart !== 0) {
+                    c = -rightPart;
+                }
+            }
+
+            const quadRes = AltronMath.solveQuadratic(a, b, c);
+            return {
+                type: 'solution',
+                speech: `Квадратное уравнение решено. Корни: ${quadRes.roots.join(', ')}`,
+                title: `Квадратное уравнение: ${a}x² + (${b})x + (${c}) = 0`,
+                latex: quadRes.latex,
+                steps: quadRes.steps,
+                content: `### 🎯 Решение квадратного уравнения\n\n$$${a}x^2 + (${b})x + (${c}) = 0$$\n\n**Результат:**\n$$${quadRes.latex}$$\n\n#### Пошаговый вывод:\n${quadRes.steps.map((s, i) => `${i + 1}. ${s}`).join("\n\n")}`
+            };
+        }
+
+        // 7. НОД и НОК
+        if (text.includes("нод") || text.includes("gcd") || text.includes("наибольший общий делитель")) {
+            const nums = raw.match(/\d+/g);
+            if (nums && nums.length >= 2) {
+                const a = parseInt(nums[0]), b = parseInt(nums[1]);
+                const val = AltronMath.gcd(a, b);
+                return {
+                    type: 'solution',
+                    speech: `Наибольший общий делитель чисел ${a} и ${b} равен ${val}`,
+                    title: `НОД (${a}, ${b})`,
+                    latex: `\\gcd(${a}, ${b}) = ${val}`,
+                    steps: [
+                        `Применяем алгоритм Евклида для чисел ${a} и ${b}`,
+                        `Делим с остатком до получения нулевого остатка`,
+                        `НОД(${a}, ${b}) = ${val}`
+                    ],
+                    content: `### 🔢 Наибольший общий делитель (НОД)\n\n$$\\gcd(${a}, ${b}) = ${val}$$\n\nАлгоритм Евклида подтверждает, что максимальное целое число, на которое делятся оба числа без остатка, равно **${val}**.`
+                };
+            }
+        }
+
+        if (text.includes("нок") || text.includes("lcm") || text.includes("наименьшее общее кратное")) {
+            const nums = raw.match(/\d+/g);
+            if (nums && nums.length >= 2) {
+                const a = parseInt(nums[0]), b = parseInt(nums[1]);
+                const val = AltronMath.lcm(a, b);
+                return {
+                    type: 'solution',
+                    speech: `Наименьшее общее кратное чисел ${a} и ${b} равно ${val}`,
+                    title: `НОК (${a}, ${b})`,
+                    latex: `\\text{lcm}(${a}, ${b}) = ${val}`,
+                    steps: [
+                        `Связь между НОД и НОК: $\\text{lcm}(a, b) = \\frac{|a \\cdot b|}{\\gcd(a, b)}$`,
+                        `$\\gcd(${a}, ${b}) = ${AltronMath.gcd(a, b)}$`,
+                        `$\\text{lcm}(${a}, ${b}) = \\frac{${a} \\cdot ${b}}{${AltronMath.gcd(a, b)}} = ${val}$`
+                    ],
+                    content: `### 🔢 Наименьшее общее кратное (НОК)\n\n$$\\text{lcm}(${a}, ${b}) = ${val}$$\n\nМинимальное натуральное число, которое делится нацело и на ${a}, и на ${b}, равно **${val}**.`
+                };
+            }
+        }
+
+        // 8. Факториал
+        if (text.includes("факториал") || /^\d+\s*!$/.test(raw.trim())) {
+            const numMatch = raw.match(/\d+/);
+            if (numMatch) {
+                const n = parseInt(numMatch[0]);
+                if (n <= 170) {
+                    const val = AltronMath.factorial(n);
+                    return {
+                        type: 'solution',
+                        speech: `Факториал ${n} равен ${val}`,
+                        title: `Факториал: ${n}!`,
+                        latex: `${n}! = ${val}`,
+                        steps: [`$${n}! = 1 \\times 2 \\times \\dots \\times ${n} = ${val}$`],
+                        content: `### ⚡ Факториал числа\n\n$$${n}! = ${val}$$\n\nПроизведение всех натуральных чисел от 1 до ${n}.`
+                    };
+                }
+            }
+        }
+
+        // 9. Статистика ряда чисел
+        if (text.includes("статистика") || text.includes("дисперсия") || text.includes("медиана") || text.includes("среднее")) {
+            const numbers = (raw.match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
+            if (numbers.length >= 2) {
+                const stats = AltronMath.calculateStatistics(numbers);
+                return {
+                    type: 'solution',
+                    speech: `Статистический анализ завершен. Среднее значение: ${stats.mean.toFixed(2)}, медиана: ${stats.median}`,
+                    title: `Статистика выборки (N = ${stats.n})`,
+                    latex: `\\bar{x} = ${stats.mean.toFixed(3)}, \\quad s^2 = ${stats.variance.toFixed(3)}`,
+                    steps: stats.steps,
+                    content: `### 📊 Статистический анализ выборки\n\n${stats.steps.map(s => `- ${s}`).join("\n")}`
+                };
+            }
+        }
+
+        // 10. Матрицы: определитель
+        if (text.includes("определитель") || text.includes("детерминант") || text.includes("det")) {
+            try {
+                // Ищем матрицу формата [[1,2],[3,4]]
+                const matMatch = raw.match(/\[\s*\[.*?\]\s*\]/);
+                if (matMatch) {
+                    const matrix = JSON.parse(matMatch[0]);
+                    const det = AltronMath.matrixDeterminant(matrix);
+                    const matLatex = AltronMath.matrixToLatex(matrix);
+                    return {
+                        type: 'solution',
+                        speech: `Определитель матрицы равен ${det}`,
+                        title: `Определитель матрицы det(A)`,
+                        latex: `\\det ${matLatex} = ${det}`,
+                        steps: [`Вычисляем определитель для квадратной матрицы порядка ${matrix.length}`],
+                        content: `### 🔲 Определитель матрицы\n\n$$\\det ${matLatex} = ${det}$$`
+                    };
+                }
+            } catch (err) {
+                // pass to general evaluator
+            }
+        }
+
+        // 11. Поиск по Справочнику Альтрона (теоремы, формулы, объяснения)
+        if (typeof AltronHandbook !== 'undefined') {
+            for (let item of AltronHandbook) {
+                const matchTitle = item.title.toLowerCase();
+                const matchDesc = item.description.toLowerCase();
+                const queryWords = text.split(/\s+/).filter(w => w.length > 2);
+
+                const hasWordMatch = queryWords.some(w => matchTitle.includes(w) || matchDesc.includes(w));
+                if (hasWordMatch) {
+                    return {
+                        type: 'handbook',
+                        speech: `Извлечена информация из базы знаний Альтрона по теме: ${item.title}.`,
+                        title: item.title,
+                        latex: item.latex,
+                        content: `### 📚 База знаний Альтрона: ${item.title}\n\n*Категория:* **${item.category}**\n\n${item.description}\n\n$$\n${item.latex}\n$$\n\n💡 *Пример применения:* ${item.example}`
+                    };
+                }
+            }
+        }
+
+        // 12. Прямое математическое вычисление выражения через Math.js (если введено просто выражение типа 2^10 + sqrt(144) * sin(pi/2))
+        try {
+            if (typeof math !== 'undefined' && math.evaluate) {
+                let cleanMath = raw.replace(/^[=]/, '').trim();
+                const evaluated = math.evaluate(cleanMath);
+                if (evaluated !== undefined && typeof evaluated !== 'function') {
+                    const resultStr = typeof evaluated === 'object' && evaluated.toString ? evaluated.toString() : String(evaluated);
+                    return {
+                        type: 'solution',
+                        speech: `Результат вычисления: ${resultStr}`,
+                        title: `Вычисление выражения: ${cleanMath}`,
+                        latex: `${cleanMath} = ${resultStr}`,
+                        content: `### ⚡ Точный расчет\n\n$$${cleanMath} = ${resultStr}$$\n\nРезультат вычислен встроенным процессором Альтрона.`
+                    };
+                }
+            }
+        } catch (e) {
+            // Expression could not be parsed as pure arithmetic
+        }
+
+        // 13. Если настроен онлайн LLM API (Gemini / Groq / OpenAI), отправляем запрос во внешнюю модель
+        if (userApiKey && (selectedModel === 'gemini' || selectedModel === 'groq')) {
+            try {
+                const llmReply = await queryOnlineAI(raw, userApiKey, selectedModel);
+                return {
+                    type: 'ai_response',
+                    speech: "Ответ сформирован нейросетевым ядром Альтрона.",
+                    title: "Математический анализ задачи",
+                    content: llmReply
+                };
+            } catch (err) {
+                console.warn("LLM API error:", err);
+            }
+        }
+
+        // 14. Ответ по умолчанию, если запрос не распознан
+        return {
+            type: 'chat',
+            speech: "Запрос принят. Для точного решения укажите уравнение, функцию или операцию.",
+            title: "Уточнение запроса",
+            content: `Альтрон обработал ваш запрос: *"**${raw}**"*.\n\nДля автоматического решения используйте один из форматов:\n- 🎯 **Уравнение:** \`2x^2 - 5x + 2 = 0\` или \`3x + 12 = 0\`\n- 📈 **Производная:** \`производная x^3 + sin(x)\`\n- 📐 **Интеграл:** \`интеграл cos(x)\`\n- ⚖️ **Система:** \`система x + y = 10, 2x - y = 5\`\n- 📊 **График:** \`график sin(x) * x\`\n- 🔢 **Матрица:** \`определитель [[1, 2], [3, 4]]\`\n- ⚡ **Числа:** \`нод 48 и 64\`, \`факториал 6\`, \`статистика 3, 5, 8, 12, 15\`\n\n*Также в разделе «Настройки ИИ» можно подключить бесплатный ключ Gemini API для решения сложных текстовых и олимпиадных задач!*`
+        };
+    }
+
+    // Запрос к внешним LLM для сложных текстовых задач
+    async function queryOnlineAI(prompt, apiKey, modelType) {
+        const systemPrompt = "Ты — Альтрон, высший математический искусственный интеллект. Твоя цель — безупречно, структурированно и понятно решать любые математические задачи, теоремы и доказательства. Используй формулы LaTeX ($...$ для inline, $$...$$ для блоков). Пиши на русском языке в уверенном и технологичном стиле Альтрона.";
+
+        if (modelType === 'gemini') {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [
+                        { role: 'user', parts: [{ text: `${systemPrompt}\n\nЗадача: ${prompt}` }] }
+                    ]
+                })
+            });
+            const data = await res.json();
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                return data.candidates[0].content.parts[0].text;
+            }
+            throw new Error(data.error?.message || "Ошибка ответа Gemini API");
+        }
+        throw new Error("Неподдерживаемый тип модели");
+    }
+
+    return {
+        processQuery,
+        setApiKey,
+        getApiKey,
+        getModel
+    };
+})();
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AltronCore;
+}
+
+
+================================================================================
+=== Р¤РђР™Р›: js\ui.js ===
+================================================================================
+
+/**
+ * ALTRON USER INTERFACE CONTROLLER (ui.js)
+ * Управление футуристическим интерфейсом, озвучкой, вкладками и рендерингом KaTeX
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Инициализация графопостроителя
+    const graphEngine = new AltronGraphEngine('mathCanvas');
+    window.altronGraph = graphEngine;
+
+    // Элементы интерфейса
+    const chatContainer = document.getElementById('chatMessages');
+    const queryInput = document.getElementById('queryInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const voiceToggleBtn = document.getElementById('voiceToggleBtn');
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+    const copyAllChatBtn = document.getElementById('copyAllChatBtn');
+    const exportAllChatBtn = document.getElementById('exportAllChatBtn');
+    const copyToast = document.getElementById('copyToast');
+    const tabButtons = document.querySelectorAll('.nav-tab');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    const quickChips = document.querySelectorAll('.chip');
+    const keyButtons = document.querySelectorAll('.key-btn');
+    const handbookContainer = document.getElementById('handbookList');
+    const handbookSearch = document.getElementById('handbookSearch');
+
+    // Настройки и история диалога
+    let isVoiceEnabled = true;
+    let isSoundEnabled = true;
+    const dialogHistory = [];
+
+    // Универсальное копирование в буфер обмена (работает как по http/https, так и по file://)
+    function copyToClipboard(text, toastMsg = '✓ Скопировано в буфер обмена!') {
+        function showToast(msg) {
+            if (!copyToast) return;
+            copyToast.textContent = msg;
+            copyToast.classList.add('show');
+            setTimeout(() => copyToast.classList.remove('show'), 2500);
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(toastMsg);
+                playSciFiSound('beep');
+            }).catch(() => {
+                fallbackCopy(text, toastMsg);
+            });
+        } else {
+            fallbackCopy(text, toastMsg);
+        }
+    }
+
+    function fallbackCopy(text, toastMsg) {
+        try {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            if (successful) {
+                if (copyToast) {
+                    copyToast.textContent = toastMsg;
+                    copyToast.classList.add('show');
+                    setTimeout(() => copyToast.classList.remove('show'), 2500);
+                }
+                playSciFiSound('beep');
+            } else {
+                alert("Пожалуйста, выделите текст и нажмите Ctrl+C");
+            }
+        } catch (err) {
+            alert("Не удалось скопировать: выделите текст и нажмите Ctrl+C");
+        }
+    }
+
+    // Web Audio API генератор звуков в стиле Альтрона / Джарвиса
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSciFiSound(type = 'beep') {
+        if (!isSoundEnabled || !audioCtx) return;
+        try {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            if (type === 'beep') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.exponentialRampToValueAtTime(1760, now + 0.08);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } else if (type === 'compute') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.linearRampToValueAtTime(880, now + 0.15);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'success') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.07); // E5
+                osc.frequency.setValueAtTime(1046.50, now + 0.14); // C6
+                gain.gain.setValueAtTime(0.09, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+        } catch (e) {
+            // Audio context failed
+        }
+    }
+
+    // Синтез речи (Альтрон говорит)
+    function speakText(text) {
+        if (!isVoiceEnabled || !('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel(); // сброс предыдущей речи
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ru-RU';
+        utterance.rate = 1.05; // технологичный, уверенный темп
+        utterance.pitch = 0.95; // чуть более низкий, кибернетический тон
+
+        // Поиск русского голоса
+        const voices = window.speechSynthesis.getVoices();
+        const ruVoice = voices.find(v => v.lang.includes('ru') || v.lang.includes('RU'));
+        if (ruVoice) utterance.voice = ruVoice;
+
+        // Анимация голосового ядра Альтрона при речи
+        const coreRing = document.querySelector('.altron-core-avatar');
+        if (coreRing) coreRing.classList.add('speaking');
+        utterance.onend = () => {
+            if (coreRing) coreRing.classList.remove('speaking');
+        };
+        utterance.onerror = () => {
+            if (coreRing) coreRing.classList.remove('speaking');
+        };
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Парсер простого Markdown в HTML
+    function parseMarkdown(md) {
+        let html = md
+            .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+            .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
+            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+            .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+            .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+            .replace(/`([^`]+)`/gim, '<code>$1</code>')
+            .replace(/^\s*-\s+(.*$)/gim, '<li>$1</li>')
+            .replace(/\n\n/gim, '<br><br>');
+
+        return html;
+    }
+
+    // Рендеринг KaTeX формул в элементе
+    function renderMathFormulas(element) {
+        if (typeof renderMathInElement !== 'undefined') {
+            try {
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false },
+                        { left: '\\[', right: '\\]', display: true },
+                        { left: '\\(', right: '\\)', display: false }
+                    ],
+                    throwOnError: false
+                });
+            } catch (err) {
+                console.warn("KaTeX render error:", err);
+            }
+        }
+    }
+
+    // Добавление сообщения в чат
+    function addChatMessage(role, content, title = '') {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `chat-message ${role}-message`;
+
+        const avatar = role === 'altron' ? '🤖' : '👤';
+        const author = role === 'altron' ? 'АЛЬТРОН' : 'ВЫ';
+
+        // Сохраняем в историю диалога для полного копирования
+        dialogHistory.push({
+            role,
+            avatar,
+            author,
+            title,
+            content,
+            time: new Date().toLocaleTimeString()
+        });
+
+        let innerHtml = `
+            <div class="msg-header">
+                <span class="msg-author">${avatar} ${author}</span>
+                <span class="msg-time">${new Date().toLocaleTimeString()}</span>
+            </div>
+            <div class="msg-body">
+                ${title ? `<div class="msg-title">${title}</div>` : ''}
+                <div class="msg-content">${parseMarkdown(content)}</div>
+            </div>
+        `;
+
+        if (role === 'altron') {
+            innerHtml += `
+                <div class="msg-actions">
+                    <button class="action-btn copy-btn" title="Скопировать ответ"><i class="icon-copy"></i> Скопировать ответ</button>
+                    <button class="action-btn speak-btn" title="Озвучить ответ"><i class="icon-volume"></i> Озвучить</button>
+                </div>
+            `;
+        } else {
+            innerHtml += `
+                <div class="msg-actions">
+                    <button class="action-btn copy-btn" title="Скопировать запрос">Скопировать запрос</button>
+                </div>
+            `;
+        }
+
+        msgDiv.innerHTML = innerHtml;
+        chatContainer.appendChild(msgDiv);
+        renderMathFormulas(msgDiv);
+
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Обработчики кнопок внутри сообщения
+        const copyBtn = msgDiv.querySelector('.copy-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                copyToClipboard(content, '✓ Сообщение скопировано в буфер!');
+                const orig = copyBtn.innerHTML;
+                copyBtn.innerHTML = '✓ Скопировано';
+                setTimeout(() => copyBtn.innerHTML = orig, 2000);
+            });
+        }
+
+        const speakBtn = msgDiv.querySelector('.speak-btn');
+        if (speakBtn) {
+            speakBtn.addEventListener('click', () => {
+                const plainText = content.replace(/[$#*`]/g, '');
+                speakText(plainText);
+            });
+        }
+    }
+
+    // Обработчик кнопки «Скопировать всё» (весь диалог)
+    if (copyAllChatBtn) {
+        copyAllChatBtn.addEventListener('click', () => {
+            if (dialogHistory.length === 0) {
+                copyToClipboard("", "Диалог пуст");
+                return;
+            }
+            let fullText = `# МАТЕМАТИЧЕСКИЙ ДИАЛОГ С ИИ «АЛЬТРОН»\nЭкспортировано: ${new Date().toLocaleString()}\n\n` +
+                "==========================================================\n\n";
+
+            dialogHistory.forEach(item => {
+                fullText += `[${item.time}] ${item.author}:\n`;
+                if (item.title) fullText += `Тема: ${item.title}\n`;
+                fullText += `${item.content}\n\n`;
+                fullText += "----------------------------------------------------------\n\n";
+            });
+
+            copyToClipboard(fullText, "✓ Весь диалог и решения скопированы!");
+        });
+    }
+
+    // Обработчик кнопки «Экспорт» (скачать в файл .md)
+    if (exportAllChatBtn) {
+        exportAllChatBtn.addEventListener('click', () => {
+            if (dialogHistory.length === 0) {
+                alert("Диалог пуст");
+                return;
+            }
+            let fullText = `# МАТЕМАТИЧЕСКИЙ ДИАЛОГ С ИИ «АЛЬТРОН»\nЭкспортировано: ${new Date().toLocaleString()}\n\n` +
+                "==========================================================\n\n";
+
+            dialogHistory.forEach(item => {
+                fullText += `### [${item.time}] ${item.author}\n`;
+                if (item.title) fullText += `**Тема:** ${item.title}\n\n`;
+                fullText += `${item.content}\n\n`;
+                fullText += "---\n\n";
+            });
+
+            const blob = new Blob([fullText], { type: 'text/markdown;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `altron_math_session_${Date.now()}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            if (copyToast) {
+                copyToast.textContent = "✓ Сессия сохранена в файл .md!";
+                copyToast.classList.add('show');
+                setTimeout(() => copyToast.classList.remove('show'), 2500);
+            }
+            playSciFiSound('success');
+        });
+    }
+
+    // Индикатор размышлений Альтрона
+    function showThinkingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.id = 'thinkingIndicator';
+        indicator.className = 'chat-message altron-message thinking';
+        indicator.innerHTML = `
+            <div class="msg-header">
+                <span class="msg-author">🤖 АЛЬТРОН</span>
+                <span class="pulse-status">ВЫЧИСЛИТЕЛЬНЫЙ АНАЛИЗ...</span>
+            </div>
+            <div class="thinking-dots">
+                <span></span><span></span><span></span>
+            </div>
+        `;
+        chatContainer.appendChild(indicator);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        return indicator;
+    }
+
+    function removeThinkingIndicator() {
+        const ind = document.getElementById('thinkingIndicator');
+        if (ind) ind.remove();
+    }
+
+    // Отправка запроса
+    async function handleUserQuery(text) {
+        if (!text || !text.trim()) return;
+        const query = text.trim();
+
+        // Добавляем сообщение пользователя
+        addChatMessage('user', query);
+        queryInput.value = '';
+        playSciFiSound('compute');
+
+        const thinking = showThinkingIndicator();
+
+        try {
+            const response = await AltronCore.processQuery(query, graphEngine);
+            removeThinkingIndicator();
+            playSciFiSound('success');
+
+            addChatMessage('altron', response.content, response.title);
+
+            if (response.speech && isVoiceEnabled) {
+                speakText(response.speech);
+            }
+
+            // Если был построен график, переключаем на вкладку графика
+            if (response.type === 'graph') {
+                switchTab('graphTab');
+            }
+        } catch (error) {
+            removeThinkingIndicator();
+            addChatMessage('altron', `⚠️ В ходе вычислений произошла ошибка: ${error.message}`);
+        }
+    }
+
+    // Слушатели событий
+    sendBtn.addEventListener('click', () => handleUserQuery(queryInput.value));
+    queryInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleUserQuery(queryInput.value);
+        }
+    });
+
+    // Переключение вкладок
+    function switchTab(tabId) {
+        tabButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tab === tabId);
+        });
+        tabPanes.forEach(pane => {
+            pane.classList.toggle('active', pane.id === tabId);
+        });
+        playSciFiSound('beep');
+
+        if (tabId === 'graphTab') {
+            setTimeout(() => graphEngine.resize(), 100);
+        }
+    }
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // Быстрые чипы (примеры)
+    quickChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const query = chip.dataset.query;
+            if (query) {
+                queryInput.value = query;
+                handleUserQuery(query);
+            }
+        });
+    });
+
+    // Виртуальная математическая клавиатура
+    keyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const insertVal = btn.dataset.insert;
+            if (!insertVal) return;
+            playSciFiSound('beep');
+
+            const start = queryInput.selectionStart;
+            const end = queryInput.selectionEnd;
+            const val = queryInput.value;
+
+            queryInput.value = val.substring(0, start) + insertVal + val.substring(end);
+            queryInput.focus();
+            const newPos = start + insertVal.length;
+            queryInput.setSelectionRange(newPos, newPos);
+        });
+    });
+
+    // Переключатель озвучки
+    voiceToggleBtn.addEventListener('click', () => {
+        isVoiceEnabled = !isVoiceEnabled;
+        voiceToggleBtn.classList.toggle('active', isVoiceEnabled);
+        voiceToggleBtn.title = isVoiceEnabled ? "Озвучка включена" : "Озвучка отключена";
+        if (!isVoiceEnabled && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+        playSciFiSound('beep');
+    });
+
+    // Переключатель звуковых эффектов
+    soundToggleBtn.addEventListener('click', () => {
+        isSoundEnabled = !isSoundEnabled;
+        soundToggleBtn.classList.toggle('active', isSoundEnabled);
+        soundToggleBtn.title = isSoundEnabled ? "Звуки интерфейса включены" : "Звуки интерфейса выключены";
+        if (isSoundEnabled) playSciFiSound('beep');
+    });
+
+    // Инициализация Справочника
+    function renderHandbook(filter = '') {
+        if (!handbookContainer || typeof AltronHandbook === 'undefined') return;
+        handbookContainer.innerHTML = '';
+
+        const filtered = AltronHandbook.filter(item => {
+            const q = filter.toLowerCase();
+            return item.title.toLowerCase().includes(q) ||
+                   item.category.toLowerCase().includes(q) ||
+                   item.description.toLowerCase().includes(q);
+        });
+
+        filtered.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'handbook-card';
+            card.innerHTML = `
+                <div class="card-badge">${item.category}</div>
+                <h3>${item.title}</h3>
+                <p>${item.description}</p>
+                <div class="card-formula">$$${item.latex}$$</div>
+                <div class="card-example"><strong>Пример:</strong> ${item.example}</div>
+                <button class="use-formula-btn" data-expr="${item.example}">Использовать в Альтроне</button>
+            `;
+            handbookContainer.appendChild(card);
+            renderMathFormulas(card);
+
+            card.querySelector('.use-formula-btn').addEventListener('click', () => {
+                queryInput.value = item.example;
+                switchTab('chatTab');
+                queryInput.focus();
+            });
+        });
+    }
+
+    renderHandbook();
+    if (handbookSearch) {
+        handbookSearch.addEventListener('input', (e) => renderHandbook(e.target.value));
+    }
+
+    // Управление графиком из вкладки Графопостроителя
+    const plotInput = document.getElementById('graphExprInput');
+    const plotBtn = document.getElementById('plotBtn');
+    const zoomInBtn = document.getElementById('zoomInBtn');
+    const zoomOutBtn = document.getElementById('zoomOutBtn');
+    const resetGraphBtn = document.getElementById('resetGraphBtn');
+
+    if (plotBtn && plotInput) {
+        plotBtn.addEventListener('click', () => {
+            if (plotInput.value.trim()) {
+                graphEngine.setFunction(plotInput.value.trim());
+                playSciFiSound('compute');
+            }
+        });
+        plotInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') plotBtn.click();
+        });
+    }
+    if (zoomInBtn) zoomInBtn.addEventListener('click', () => graphEngine.zoomIn());
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => graphEngine.zoomOut());
+    if (resetGraphBtn) resetGraphBtn.addEventListener('click', () => graphEngine.resetView());
+
+    // График по умолчанию
+    graphEngine.setFunction("x^3 - 3*x");
+
+    // Приветственное сообщение от Альтрона
+    setTimeout(() => {
+        addChatMessage('altron', `### ⚡ Ядро Альтрона в сети\n\nВсе математические протоколы загружены. Я готов к решению задач любой категории сложности: от школьных уравнений до тензорного анализа и вычисления интегралов.\n\n*Задайте задачу в поле ниже или выберите один из быстрых примеров.*`);
+        if (isVoiceEnabled) {
+            speakText("Ядро Альтрона активировано. Все математические протоколы в сети. Чем я могу помочь?");
+        }
+    }, 500);
+});
+
+
+================================================================================
+=== Р¤РђР™Р›: server\server.py ===
+================================================================================
+
+"""
+ALTRON FASTAPI BACKEND SERVER (server.py)
+"""
+
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+import os
+from typing import Optional, List, Any
+
+try:
+    from server.altron_engine import AltronPyEngine
+except ImportError:
+    from altron_engine import AltronPyEngine
+
+app = FastAPI(title="Altron Mathematical AI API", version="2.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+engine = AltronPyEngine()
+
+class EquationRequest(BaseModel):
+    equation: str
+    variable: Optional[str] = "x"
+
+class DiffRequest(BaseModel):
+    expression: str
+    variable: Optional[str] = "x"
+    order: Optional[int] = 1
+
+class IntegralRequest(BaseModel):
+    expression: str
+    variable: Optional[str] = "x"
+    a: Optional[str] = None
+    b: Optional[str] = None
+
+class MatrixRequest(BaseModel):
+    matrix: List[List[float]]
+
+@app.get("/api/health")
+def health():
+    return {"status": "online", "engine": "Altron Quantum Math Core"}
+
+@app.post("/api/solve")
+def solve(req: EquationRequest):
+    try:
+        return engine.solve_equation(req.equation, req.variable)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/diff")
+def diff(req: DiffRequest):
+    try:
+        return engine.differentiate(req.expression, req.variable, req.order)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/integrate")
+def integrate(req: IntegralRequest):
+    try:
+        return engine.integrate(req.expression, req.variable, req.a, req.b)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/matrix")
+def matrix(req: MatrixRequest):
+    try:
+        return engine.matrix_operations(req.matrix)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# Статические файлы (веб-интерфейс)
+static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=True)
+
+
+================================================================================
+=== Р¤РђР™Р›: server\altron_engine.py ===
+================================================================================
+
+"""
+ALTRON PYTHON SYMPY ENGINE (altron_engine.py)
+Символьное аналитическое ядро высшей математики на базе SymPy
+"""
+
+import sympy as sp
+import numpy as np
+
+class AltronPyEngine:
+    def __init__(self):
+        self.x, self.y, self.z, self.t = sp.symbols('x y z t')
+
+    def solve_equation(self, eq_str, var='x'):
+        """Решение алгебраических и трансцендентных уравнений с пошаговыми комментариями"""
+        v = sp.Symbol(var)
+        if '=' in eq_str:
+            lhs_str, rhs_str = eq_str.split('=', 1)
+            eq = sp.Eq(sp.sympify(lhs_str), sp.sympify(rhs_str))
+        else:
+            eq = sp.Eq(sp.sympify(eq_str), 0)
+        
+        solutions = sp.solve(eq, v)
+        latex_eq = sp.latex(eq)
+        latex_sols = [sp.latex(s) for s in solutions]
+
+        return {
+            "equation_latex": latex_eq,
+            "solutions": [str(s) for s in solutions],
+            "solutions_latex": latex_sols,
+            "count": len(solutions)
+        }
+
+    def differentiate(self, expr_str, var='x', order=1):
+        """Аналитическое дифференцирование любого порядка"""
+        v = sp.Symbol(var)
+        expr = sp.sympify(expr_str)
+        deriv = sp.diff(expr, v, order)
+
+        return {
+            "expression_latex": sp.latex(expr),
+            "derivative": str(deriv),
+            "derivative_latex": sp.latex(deriv),
+            "order": order
+        }
+
+    def integrate(self, expr_str, var='x', a=None, b=None):
+        """Неопределенный и определенный интегралы"""
+        v = sp.Symbol(var)
+        expr = sp.sympify(expr_str)
+
+        if a is not None and b is not None:
+            val = sp.integrate(expr, (v, sp.sympify(a), sp.sympify(b)))
+            return {
+                "type": "definite",
+                "expression_latex": sp.latex(expr),
+                "lower_bound": str(a),
+                "upper_bound": str(b),
+                "result": str(val),
+                "result_latex": sp.latex(val)
+            }
+        else:
+            antideriv = sp.integrate(expr, v)
+            return {
+                "type": "indefinite",
+                "expression_latex": sp.latex(expr),
+                "result": str(antideriv),
+                "result_latex": sp.latex(antideriv) + " + C"
+            }
+
+    def compute_limit(self, expr_str, var='x', point='0', direction='+'):
+        """Вычисление пределов"""
+        v = sp.Symbol(var)
+        expr = sp.sympify(expr_str)
+        pt = sp.sympify(point)
+        lim_val = sp.limit(expr, v, pt, dir=direction)
+
+        return {
+            "expression_latex": sp.latex(expr),
+            "point": str(point),
+            "result": str(lim_val),
+            "result_latex": sp.latex(lim_val)
+        }
+
+    def matrix_operations(self, mat_list):
+        """Матричные вычисления: определитель, обратная матрица, ранг, собственные значения"""
+        M = sp.Matrix(mat_list)
+        res = {
+            "matrix_latex": sp.latex(M),
+            "rows": M.rows,
+            "cols": M.cols,
+            "rank": M.rank()
+        }
+        if M.is_square:
+            det = M.det()
+            res["det"] = str(det)
+            res["det_latex"] = sp.latex(det)
+            if det != 0:
+                res["inverse_latex"] = sp.latex(M.inv())
+            res["eigenvals"] = {str(k): v for k, v in M.eigenvals().items()}
+        return res
+
+
+================================================================================
+=== Р¤РђР™Р›: server\requirements.txt ===
+================================================================================
+
+fastapi>=0.100.0
+uvicorn>=0.22.0
+sympy>=1.12
+numpy>=1.24.0
+scipy>=1.10.0
+pydantic>=2.0.0
+
+
+================================================================================
+=== Р¤РђР™Р›: start_altron.bat ===
+================================================================================
+
+@echo off
+chcp 65001 > nul
+title АЛЬТРОН — Математический Искусственный Интеллект
+color 0B
+
+echo =====================================================================
+echo                АЛЬТРОН // ALTRON MATHEMATICAL AI
+echo                  ВЫСШИЙ МАТЕМАТИЧЕСКИЙ РАЗУМ
+echo =====================================================================
+echo.
+echo [1/2] Инициализация систем Альтрона...
+
+where python >nul 2>nul
+if %errorlevel% equ 0 (
+    echo [2/2] Обнаружено окружение Python. Проверяю зависимости...
+    pip show fastapi >nul 2>nul
+    if %errorlevel% neq 0 (
+        echo Установка библиотек: pip install -r server\requirements.txt ...
+        pip install -r server\requirements.txt
+    )
+    echo Запуск сервера Альтрона на http://127.0.0.1:8000 ...
+    start http://127.0.0.1:8000
+    python server\server.py
+) else (
+    echo [2/2] Запуск автономного квантового веб-терминала Альтрона...
+    start "" "index.html"
+)
+
+echo.
+echo =====================================================================
+echo    Альтрон запущен в вашем браузере! Приятной работы с математикой.
+echo =====================================================================
+timeout /t 5 > nul
+
+
+================================================================================
+=== Р¤РђР™Р›: README.md ===
+================================================================================
+
+# 🤖 АЛЬТРОН (Altron Math AI) — Высший Математический Разум
+
+**Альтрон** — это специализированный искусственный интеллект, созданный для решения, анализа и визуализации задач любой области математики: от школьной арифметики и алгебры до высшего математического анализа, теории матриц и статистики.
+
+---
+
+## ⚡ Быстрый запуск
+
+Запустить Альтрона можно **в один клик**:
+1. Просто запустите файл **`start_altron.bat`** (или дважды кликните по **`index.html`**).
+2. Альтрон моментально откроется в вашем браузере (Chrome, Edge, Opera, Firefox).
+3. Приложение работает автономно и не требует обязательной установки сторонних тяжелых библиотек!
+
+---
+
+## 🧠 Что умеет Альтрон
+
+### 1. 🎯 Алгебра и уравнения
+- Пошаговое решение линейных, квадратных и биквадратных уравнений с расчетом дискриминанта ($D = b^2 - 4ac$) и нахождением действительных и комплексных корней.
+- Системы линейных алгебраических уравнений (СЛАУ 2x2 и 3x3) методом Крамера с расчетом определителей $\Delta, \Delta_x, \Delta_y$.
+- Упрощение выражений, формулы сокращенного умножения, разложение на множители.
+
+### 2. 📈 Математический анализ (Calculus)
+- **Символьное дифференцирование** ($\frac{d}{dx}$): производные полиномов, тригонометрических ($\sin, \cos, \tan$), показательных ($e^x, a^x$) и логарифмических ($\ln x$) функций, производные произведений и дробей.
+- **Интегрирование** ($\int f(x) dx$): нахождение первообразных и вычисление определенных интегралов.
+- **Пределы** ($\lim_{x \to x_0} f(x)$): замечательные пределы, правило Лопиталя.
+
+### 3. 🔲 Линейная алгебра и матрицы
+- Вычисление определителей матриц $\det(A)$ любого порядка с разложением по строкам.
+- Транспонирование, перемножение матриц, нахождение обратной матрицы $A^{-1}$.
+- Векторные операции: скалярное произведение, длина векторов, угол между векторами.
+
+### 4. 📊 Теория чисел, статистика и комбинаторика
+- Поиск **НОД** (наибольший общий делитель) и **НОК** (наименьшее общее кратное) по алгоритму Евклида.
+- Факториал ($n!$), число сочетаний $C_n^k$, размещений $A_n^k$, перестановки $P_n$.
+- Статистика числовой выборки: среднее арифметическое $\bar{x}$, медиана $Me$, мода $Mo$, выборочная дисперсия $s^2$, стандартное отклонение $s$ и размах.
+
+### 5. 📉 Интерактивный 2D Графопостроитель
+- Плавное масштабирование колесиком мыши и перемещение зажатой левой кнопкой мыши.
+- Автоматическое нахождение и визуальная подсветка корней функций ($y = 0$).
+- Интерактивный визир: отображение точных координат $(x, y)$ при наведении курсора на кривую.
+
+### 6. 🔊 Голосовой синтез и футуристический интерфейс
+- **Web Speech API**: Альтрон умеет озвучивать свои ответы и ход мыслей уверенным технологичным голосом.
+- **Синтез звуковых эффектов**: квантовые щелчки и вычисления через Web Audio API.
+- **KaTeX**: безупречная типографика математических формул высокой четкости в стиле LaTeX.
+- **Справочник формул**: быстрый доступ к десяткам формул и теорем с возможностью вставки в терминал в один клик.
+- **Поддержка внешних LLM (Gemini API)**: возможность подключения API-ключа для решения текстовых задач и математических доказательств олимпиадного уровня.
+
+---
+
+## 💻 Примеры запросов к Альтрону
+
+Просто введите в терминал или нажмите на быстрые кнопки-подсказки:
+- `2x^2 - 5x + 2 = 0`
+- `производная sin(x)*e^x`
+- `интеграл x^2`
+- `система x + y = 10, 2x - y = 5`
+- `определитель [[1, 2], [3, 4]]`
+- `нод 48 и 64`
+- `факториал 7`
+- `построй график sin(x)*x`
+- `статистика 12, 15, 18, 20, 25`
+- `теорема пифагора`
+
+---
+
+## 📁 Структура проекта
+
+```
+Altron/
+│
+├── index.html            # Футуристический интерфейс терминала Альтрона
+├── styles.css            # Неоновые кибернетические стили (HUD, темы)
+├── start_altron.bat      # Лаунчер запуска в один клик для Windows
+├── README.md             # Документация проекта
+│
+├── js/
+│   ├── altron_core.js    # Интеллектуальный процессор, NLP и маршрутизация задач
+│   ├── math_engine.js    # Математическое ядро (алгебра, матанализ, матрицы)
+│   ├── graph_engine.js   # Интерактивный Canvas-графопостроитель
+│   ├── handbook.js       # Энциклопедия формул и теорем
+│   └── ui.js             # Управление интерфейсом, озвучка, KaTeX
+│
+└── server/
+    ├── server.py         # Опциональный сервер на FastAPI
+    ├── altron_engine.py  # Аналитический движок на SymPy
+    └── requirements.txt  # Зависимости Python
+```
+
+---
+*Разработано для максимальной точности, скорости и удовольствия от изучения математики.*
+

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АЛЬТРОН — Математический Искусственный Интеллект</title>
+
+    <!-- KaTeX: Математический рендеринг формул высокого разрешения -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Math.js: Продвинутый символьный и численный анализатор -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.min.js"></script>
+
+    <!-- Стили Альтрона -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ / ХЕДЕР АЛЬТРОНА -->
+    <header class="altron-header">
+        <div class="brand-section">
+            <div class="altron-core-avatar" id="altronCore" title="Квантовое ядро Альтрона"></div>
+            <div class="brand-titles">
+                <h1>АЛЬТРОН <span>AI</span></h1>
+                <div class="subtitle">ВЫСШИЙ МАТЕМАТИЧЕСКИЙ РАЗУМ • СИСТЕМА В СЕТИ</div>
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <button id="copyAllChatBtn" class="hud-btn" title="Скопировать весь диалог и все решения">
+                📋 <span>Скопировать всё</span>
+            </button>
+            <button id="exportAllChatBtn" class="hud-btn" title="Скачать весь диалог в файл Markdown">
+                💾 <span>Экспорт</span>
+            </button>
+            <button id="voiceToggleBtn" class="hud-btn active" title="Включить/выключить синтез голоса">
+                🔊 <span>Голос: ВКЛ</span>
+            </button>
+            <button id="soundToggleBtn" class="hud-btn active" title="Включить/выключить звуковые эффекты">
+                ⚡ <span>Звук: ВКЛ</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- НАВИГАЦИОННЫЕ ВКЛАДКИ -->
+    <nav class="navigation-bar">
+        <button class="nav-tab active" data-tab="chatTab">💬 Терминал Альтрона</button>
+        <button class="nav-tab" data-tab="graphTab">📈 Графопостроитель 2D</button>
+        <button class="nav-tab" data-tab="handbookTab">📚 База знаний и формул</button>
+        <button class="nav-tab" data-tab="settingsTab">⚙️ Ядро и Настройки</button>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
+    <main class="altron-container">
+
+        <!-- ВКЛАДКА 1: ТЕРМИНАЛ И РЕШАТЕЛЬ -->
+        <section id="chatTab" class="tab-pane active">
+            <div class="chat-container">
+                <!-- Окно сообщений -->
+                <div class="chat-messages" id="chatMessages"></div>
+
+                <!-- Быстрые шаблоны задач -->
+                <div class="chips-bar">
+                    <button class="chip" data-query="25 * 16">Умножение: 25 × 16</button>
+                    <button class="chip" data-query="144 / 12">Деление: 144 ÷ 12</button>
+                    <button class="chip" data-query="125 + 375">Сложение: 125 + 375</button>
+                    <button class="chip" data-query="1000 - 348">Вычитание: 1000 − 348</button>
+                    <button class="chip" data-query="(45 + 55) * 3 - 60 / 2">Пример со скобками</button>
+                    <button class="chip" data-query="1/2 + 1/3">Дроби: 1/2 + 1/3</button>
+                    <button class="chip" data-query="20% от 450">Проценты: 20% от 450</button>
+                    <button class="chip" data-query="2x^2 - 5x + 2 = 0">Квадратное: 2x² - 5x + 2 = 0</button>
+                    <button class="chip" data-query="производная sin(x)*e^x">Производная: (sin(x)·eˣ)'</button>
+                    <button class="chip" data-query="интеграл x^2">Интеграл: ∫ x² dx</button>
+                    <button class="chip" data-query="система x + y = 10, 2x - y = 5">СЛАУ: x+y=10, 2x-y=5</button>
+                    <button class="chip" data-query="определитель [[1, 2], [3, 4]]">Матрица: det [[1,2],[3,4]]</button>
+                    <button class="chip" data-query="нод 48 и 64">НОД (48, 64)</button>
+                    <button class="chip" data-query="факториал 7">Факториал 7!</button>
+                    <!-- SAT Math (7-11 класс) -->
+                    <button class="chip" data-query="вершина параболы y = 2x^2 - 8x + 6">SAT: Вершина y=2x²-8x+6</button>
+                    <button class="chip" data-query="наклон через (1, 2) и (3, 8)">SAT: Наклон через (1,2) и (3,8)</button>
+                    <button class="chip" data-query="окружность центр (2, -3) радиус 5">SAT: Окружность (2,-3) R=5</button>
+                    <button class="chip" data-query="треугольник 30-60-90 гипотенуза 10">SAT: 30-60-90 (гипотенуза 10)</button>
+                    <button class="chip" data-query="сложные проценты P=1000 r=5% t=3">SAT: Сложные проценты 5%</button>
+                    <button class="chip" data-query="комплексные (2 + 3i) * (4 - 5i)">SAT: Комплексные (2+3i)(4-5i)</button>
+                </div>
+
+                <!-- Панель ввода -->
+                <div class="input-panel">
+                    <div class="input-row">
+                        <input type="text" id="queryInput" class="query-input" placeholder="Введите пример (например: 25*16, 144/12, 125+375), уравнение или вопрос..." autocomplete="off">
+                        <button id="sendBtn" class="send-btn">
+                            <span>РЕШИТЬ</span> ➔
+                        </button>
+                    </div>
+
+                    <!-- Виртуальная математическая клавиатура -->
+                    <div class="math-keypad">
+                        <button class="key-btn" data-insert=" + " title="Сложение (плюс)">+</button>
+                        <button class="key-btn" data-insert=" - " title="Вычитание (минус)">−</button>
+                        <button class="key-btn" data-insert=" * " title="Умножение">×</button>
+                        <button class="key-btn" data-insert=" / " title="Деление">÷</button>
+                        <button class="key-btn" data-insert="%" title="Процент">%</button>
+                        <button class="key-btn" data-insert="(" title="Левая скобка">(</button>
+                        <button class="key-btn" data-insert=")" title="Правая скобка">)</button>
+                        <button class="key-btn" data-insert="^2" title="Возведение в квадрат">x²</button>
+                        <button class="key-btn" data-insert="^" title="Степень">xʸ</button>
+                        <button class="key-btn" data-insert="sqrt(" title="Квадратный корень">√</button>
+                        <button class="key-btn" data-insert="производная " title="Производная">d/dx</button>
+                        <button class="key-btn" data-insert="интеграл " title="Интеграл">∫</button>
+                        <button class="key-btn" data-insert="pi" title="Число Пи">π</button>
+                        <button class="key-btn" data-insert="e" title="Число Эйлера">e</button>
+                        <button class="key-btn" data-insert="sin(" title="Синус">sin</button>
+                        <button class="key-btn" data-insert="cos(" title="Косинус">cos</button>
+                        <button class="key-btn" data-insert="tan(" title="Тангенс">tan</button>
+                        <button class="key-btn" data-insert="ln(" title="Натуральный логарифм">ln</button>
+                        <button class="key-btn" data-insert="log(" title="Десятичный логарифм">log</button>
+                        <button class="key-btn" data-insert="система " title="Система уравнений">СЛАУ</button>
+                        <button class="key-btn" data-insert="определитель " title="Определитель матрицы">det(A)</button>
+                        <button class="key-btn" data-insert="график " title="Построить график">График</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 2: ГРАФОПОСТРОИТЕЛЬ -->
+        <section id="graphTab" class="tab-pane">
+            <div class="graph-container">
+                <div class="graph-toolbar">
+                    <input type="text" id="graphExprInput" class="graph-input" placeholder="Введите функцию, например: x^3 - 3*x или sin(x)" value="x^3 - 3*x">
+                    <button id="plotBtn" class="send-btn">Построить</button>
+                    <button id="zoomInBtn" class="hud-btn" title="Приблизить">🔍 +</button>
+                    <button id="zoomOutBtn" class="hud-btn" title="Отдалить">🔍 −</button>
+                    <button id="resetGraphBtn" class="hud-btn" title="Сбросить масштаб">↺ Сброс</button>
+                </div>
+                <div class="graph-canvas-wrapper">
+                    <canvas id="mathCanvas"></canvas>
+                    <div class="canvas-hint">💡 Зажмите ЛКМ для перемещения | Колесо мыши — масштаб | Зеленые точки — корни (f(x)=0)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 3: БАЗА ЗНАНИЙ И ФОРМУЛ -->
+        <section id="handbookTab" class="tab-pane">
+            <div class="handbook-header">
+                <input type="text" id="handbookSearch" class="handbook-search" placeholder="🔍 Поиск по справочнику Альтрона (например: интеграл, Пифагор, Виет, производная, матрица)...">
+            </div>
+            <div id="handbookList" class="handbook-grid"></div>
+        </section>
+
+        <!-- ВКЛАДКА 4: НАСТРОЙКИ ЯДРА И API -->
+        <section id="settingsTab" class="tab-pane">
+            <div class="settings-card">
+                <h2>⚙️ Настройки и Режимы Интеллекта</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                    Альтрон работает автономно на встроенном символьном движке. Вы также можете подключить внешнюю нейросетевую модель для решения олимпиадных и сложных текстовых задач.
+                </p>
+
+                <div class="settings-group">
+                    <label for="aiModeSelect">Режим работы Альтрона:</label>
+                    <select id="aiModeSelect">
+                        <option value="local">Автономный символьный процессор (Оффлайн, мгновенно)</option>
+                        <option value="gemini">Google Gemini 1.5 Flash (Глубокий разбор текстовых задач)</option>
+                    </select>
+                </div>
+
+                <div class="settings-group" id="apiKeyGroup">
+                    <label for="apiKeyInput">API-ключ (необязательно для оффлайн-режима):</label>
+                    <input type="password" id="apiKeyInput" placeholder="Введите ваш Gemini API Key...">
+                    <small style="color: var(--text-muted); display: block; margin-top: 4px;">Ключ хранится локально в вашем браузере.</small>
+                </div>
+
+                <button id="saveSettingsBtn" class="send-btn" style="width: 100%; justify-content: center; padding: 12px;">Сохранить параметры</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ТОСТ-УВЕДОМЛЕНИЕ О КОПИРОВАНИИ -->
+    <div id="copyToast" class="copy-toast">✓ Скопировано в буфер обмена!</div>
+
+    <!-- СКРИПТЫ АЛЬТРОНА -->
+    <script src="js/math_engine.js"></script>
+    <script src="js/handbook.js"></script>
+    <script src="js/graph_engine.js"></script>
+    <script src="js/altron_core.js"></script>
+    <script src="js/ui.js"></script>
+
+    <script>
+        // Сохранение настроек API
+        const aiModeSelect = document.getElementById('aiModeSelect');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+
+        if (apiKeyInput && saveSettingsBtn && aiModeSelect) {
+            apiKeyInput.value = AltronCore.getApiKey();
+            aiModeSelect.value = AltronCore.getModel();
+
+            saveSettingsBtn.addEventListener('click', () => {
+                AltronCore.setApiKey(apiKeyInput.value.trim(), aiModeSelect.value);
+                alert("Параметры Альтрона успешно обновлены!");
+            });
+        }
+    </script>
+</body>
+</html>
